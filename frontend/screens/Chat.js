@@ -90,13 +90,33 @@ const backImage = require("../assets/backImage2.png");
             "Content-Type": "application/json",
           },
         };
-        fetch("http://172.30.1.31:5001/message", message_info)
+        fetch("http://192.168.0.7:5001/message", message_info)
           .then((response) => response.json())
-          .catch(error => {console.log(error)})
-      } 
+          .then((response) => {
+            if (response.result === "success") {
+                sendBotResponse(response.reply);
+            } else alert("sendBot ERROR");
+          });
+      },
+      [messages]
     );
 
-    
+
+    const sendBotResponse = (text) => {
+      let msg = {
+        _id: Date.now(),
+        text,
+        createdAt: new Date(),
+        user: 'BOT_USER',
+      };
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, msg));
+      addDoc(collection(database, auth?.currentUser?.email), {
+        _id:  Date.now(),
+        text,
+        createdAt: new Date(),
+        user: 'BOT_USER',
+      });
+    };
 
 
     const renderSend = (props) => {

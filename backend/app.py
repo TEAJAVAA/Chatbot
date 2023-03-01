@@ -12,7 +12,10 @@ def message():
    message = data['message']['text']
    print(message)
    print(data)
-   return message
+   #추가
+   reply = []
+   reply = message
+   return jsonify(result="success", reply=reply)
 
 
 if __name__ == "__main__":
