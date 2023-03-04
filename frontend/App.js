@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Image, View, ActivityIndicator } from 'react-native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './config/firebase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import Login from './screens/Login';
 import Signup from './screens/Signup';
