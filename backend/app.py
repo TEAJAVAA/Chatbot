@@ -1,4 +1,7 @@
 from flask import Flask, jsonify, request
+from model import TransModel
+
+transModel=TransModel()
 
 app = Flask(__name__)
 
@@ -14,7 +17,7 @@ def message():
    print(data)
    #추가
    reply = []
-   reply = message
+   reply = transModel.predict(message)
    return jsonify(result="success", reply=reply)
 
 

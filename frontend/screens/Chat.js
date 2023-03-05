@@ -109,7 +109,7 @@ const backImage = require("../assets/backImage2.png");
             "Content-Type": "application/json",
           },
         };
-        fetch("http://172.30.1.28:5001/message", message_info)
+        fetch("http://10.200.147.145:5001/message", message_info)
           .then((response) => response.json())
           .then((response) => {
             if (response.result === "success") {
