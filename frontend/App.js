@@ -24,25 +24,25 @@ return (
   );
 };
 
-function LogoTitle() {
-  return (
-    <Image
-      style={{ width: '100%', height: 180 }}
-      source={require('./assets/backImage2.png')}
-    />
-  );
-}
+// function LogoTitle() {
+//   return (
+//     <Image
+//       style={{ width: '100%', height: 180 }}
+//       source={require('./assets/backImage2.png')}
+//     />
+//   );
+// }
 
 function ChatStack() {
   return (
     <Stack.Navigator defaultScreenOptions={Home}>
       <Stack.Screen name='Home' component={Home} />
       <Stack.Screen name='Chat' 
-      // options={{headerShown:false,}}
+      options={{headerShown:false,}}
         component={Chat} 
-        options={{
-        header: (props) => (<LogoTitle {...props} />)
-      }}
+      //   options={{
+      //   header: (props) => (<LogoTitle {...props} />)
+      // }}
       />
     </Stack.Navigator>
   );

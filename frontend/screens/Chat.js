@@ -4,7 +4,7 @@ import React, {
     useLayoutEffect,
     useCallback
   } from 'react';
-  import { StyleSheet, Image, View, TouchableOpacity, Text } from 'react-native';
+  import { Button, SafeAreaView, StyleSheet, Image, View, TouchableOpacity, Text } from 'react-native';
   import { ChatHeaderBar, GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
   import {
     collection,
@@ -20,6 +20,7 @@ import React, {
   import colors from '../colors';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ImageBackground } from 'react-native';
 const backImage = require("../assets/backImage2.png");
 
 
@@ -46,6 +47,24 @@ const backImage = require("../assets/backImage2.png");
     //         user:'BOT_USER'
     //       });
     //   }, []);
+
+    // ChatScreen Header
+    function LogoTitle() {
+      return (
+        <View>
+        <ImageBackground
+          style={{ width: '100%', height: 180 }}
+          source={require('../assets/backImage2.png')}
+        >
+          <TouchableOpacity
+                onPress={() => navigation.navigate("Home")}
+            >
+          <AntDesign name="left" size={24} color={colors.gray} style={styles.backButton}/>
+          </TouchableOpacity>
+        </ImageBackground>
+        </View>
+      );
+    }
 
 
     useLayoutEffect(() => {
@@ -90,7 +109,7 @@ const backImage = require("../assets/backImage2.png");
             "Content-Type": "application/json",
           },
         };
-        fetch("http://172.20.10.5:5001/message", message_info)
+        fetch("http://172.30.1.28:5001/message", message_info)
           .then((response) => response.json())
           .then((response) => {
             if (response.result === "success") {
@@ -136,45 +155,48 @@ const backImage = require("../assets/backImage2.png");
         //   ))}
         // </>
         // <Image source={backImage} style={styles.backImage} />
-        <View style={{flex: 1}}>
-        <GiftedChat
-          placeholder={'메세지를 입력하세요...'}
-          messages={messages}
-          showAvatarForEveryMessage={false}
-          showUserAvatar={false}
-          onSend={messages => onSend(messages)}
-          alwaysShowSend
-          renderSend={renderSend }
-          messagesContainerStyle={{
-            // backgroundColor: '#fff'
-          }}
-          textInputStyle={{
-            // backgroundColor: '#fff',
-            borderRadius: 20,
-          }}
-          renderAvatar={props => {
-            return( <View/>
-          )
-          }}
-          renderBubble={props => {
-            return (
-              <Bubble
-                {...props}
-                wrapperStyle={{
-                    left: {
-                      backgroundColor: '#fff',
-                    },
-                    right: {
-                      backgroundColor: '#000000'
-                    }
-                }}
-                />
+        <View style={{flex:1}}>
+          <View>
+            <LogoTitle/>
+          </View>
+          <GiftedChat
+            placeholder={'메세지를 입력하세요...'}
+            messages={messages}
+            showAvatarForEveryMessage={false}
+            showUserAvatar={false}
+            onSend={messages => onSend(messages)}
+            alwaysShowSend
+            renderSend={renderSend }
+            messagesContainerStyle={{
+              // backgroundColor: '#fff'
+            }}
+            textInputStyle={{
+              // backgroundColor: '#fff',
+              borderRadius: 20,
+            }}
+            renderAvatar={props => {
+              return( <View/>
             )
-          }}
-          user={{
-            _id: auth?.currentUser?.email
-          }}
-        />
+            }}
+            renderBubble={props => {
+              return (
+                <Bubble
+                  {...props}
+                  wrapperStyle={{
+                      left: {
+                        backgroundColor: '#fff',
+                      },
+                      right: {
+                        backgroundColor: '#000000'
+                      }
+                  }}
+                  />
+              )
+            }}
+            user={{
+              _id: auth?.currentUser?.email
+            }}
+          />
         </View>
       );
 }
@@ -183,9 +205,17 @@ const styles = StyleSheet.create({
     backImage: {
       width: "100%",
       height: 340,
-      position: "absolute",
+      // position: "absolute",
       top: 0,
       resizeMode: 'cover',
+    },
+    backButton: {
+      size:16,
+      marginTop: 50, 
+      marginLeft: 10,
+      color: '#fff', 
+      width:100, 
+      height: 100
     }
   });
 
