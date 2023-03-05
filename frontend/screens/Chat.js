@@ -109,7 +109,7 @@ const backImage = require("../assets/backImage2.png");
             "Content-Type": "application/json",
           },
         };
-        fetch("http://10.200.147.145:5001/message", message_info)
+        fetch("http://172.30.1.76:5001/message", message_info)
           .then((response) => response.json())
           .then((response) => {
             if (response.result === "success") {
@@ -157,7 +157,16 @@ const backImage = require("../assets/backImage2.png");
         // <Image source={backImage} style={styles.backImage} />
         <View style={{flex:1}}>
           <View>
-            <LogoTitle/>
+            <ImageBackground
+              style={{ width: '100%', height: 180 }}
+              source={require('../assets/backImage2.png')}
+            >
+              <TouchableOpacity
+                    onPress={() => navigation.navigate("Home")}
+                >
+              <AntDesign name="left" size={24} color={colors.gray} style={styles.backButton}/>
+              </TouchableOpacity>
+            </ImageBackground>
           </View>
           <GiftedChat
             placeholder={'메세지를 입력하세요...'}
