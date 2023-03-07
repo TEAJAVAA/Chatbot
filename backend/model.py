@@ -3,14 +3,18 @@ import re
 import pandas as pd
 import tensorflow_datasets as tfds
 import numpy as np
-
+from keras_preprocessing.sequence import pad_sequences
+import tensorflow as tf
+from keras.preprocessing.text import Tokenizer
+import csv
+from sklearn.model_selection import train_test_split
 
 class TransModel():
     def __init__(self):
         self.initialize()
 
     def initialize(self, ):
-        model = tf.keras.models.load_model('/Users/apple/Desktop/BackEnd/Chatbot/backend/my_model',compile=False,custom_objects={"create_padding_mask": self.create_padding_mask})
+        model = tf.keras.models.load_model('/Users/apple/Desktop/BackEnd/Chatbot/backend/model/my_model',compile=False,custom_objects={"create_padding_mask": self.create_padding_mask})
         self.model = model
 
         data = pd.read_csv('/Users/apple/Desktop/BackEnd/Chatbot/backend/dataset/ChatbotData (1).csv')
@@ -79,5 +83,53 @@ class TransModel():
         print(predicted_sentence)
         return predicted_sentence
 
+class FeelModel():
+    def __init__(self):
+        self.initialize()
+
+    def initialize(self, ):
+        self.model = tf.keras.models.load_model('/Users/apple/Desktop/BackEnd/Chatbot/backend/model/feel_model.h5')
+        self.tokenizer = Tokenizer(25000)
+        X_train = []
+        with open('/Users/apple/Desktop/BackEnd/Chatbot/backend/dataset/X_train_feel.csv', 'r', newline='') as file:
+            myreader = csv.reader(file, delimiter=',')
+            for rows in myreader:
+                X_train.append(rows)
+        self.tokenizer.fit_on_texts(X_train)
+        self.emotion_list = ['분노', '기쁨', '불안', '당황', '슬픔', '상처']
+
+    def predict(self,sentence):
+        token_stc = sentence.split()
+        encode_stc = self.tokenizer.texts_to_sequences([token_stc])
+        pad_stc = pad_sequences(encode_stc, maxlen=15)
+
+        score = self.model.predict(pad_stc)
+        print(self.emotion_list[score.argmax()], score[0, score.argmax()])
+        return (self.emotion_list[score.argmax()], score[0, score.argmax()])
 
 
+class AlcholModel():
+    def __init__(self):
+        self.initialize()
+
+    def initialize(self, ):
+        from keras.models import load_model
+        self.model = load_model('/Users/apple/Desktop/BackEnd/Chatbot/backend/model/alchol_model.h5')
+        self.label_list = [1.0, 3.0, 2.0, 0.0]
+        X_train = []
+        with open('/Users/apple/Desktop/BackEnd/Chatbot/backend/dataset/X_train_alchol.csv', 'r', newline='') as file:
+            myreader = csv.reader(file, delimiter=',')
+            for rows in myreader:
+                X_train.append(rows)
+        self.tokenizer = Tokenizer(25000)
+        self.tokenizer.fit_on_texts(X_train)
+        
+    def predict(self, sentence):
+        token_stc = sentence.split()
+        encode_stc = self.tokenizer.texts_to_sequences([token_stc])
+        pad_stc = pad_sequences(encode_stc, maxlen=5)
+        score = self.model.predict(pad_stc)
+        category=self.label_list[score.argmax()]
+        cat_list=['무알콜', '0-10', '10-20', '20-30']
+        # print(cat_list[int(category)], score[0, score.argmax()])
+        return cat_list[int(category)]
