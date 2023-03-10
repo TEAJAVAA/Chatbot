@@ -58,7 +58,7 @@ const Home = () => {
             backgroundColor: "#fff",
         },
         chatButton: {
-            position:'fixed',
+            // position:'fixed',
             backgroundColor: '#161346',
             height: 50,
             width: 50,

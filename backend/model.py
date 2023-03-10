@@ -1,3 +1,6 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+
 import tensorflow as tf
 import re
 import pandas as pd
@@ -8,17 +11,18 @@ import tensorflow as tf
 from keras.preprocessing.text import Tokenizer
 import csv
 from sklearn.model_selection import train_test_split
+from keras.models import load_model
 
 class TransModel():
     def __init__(self):
         self.initialize()
 
     def initialize(self, ):
-        model = tf.keras.models.load_model('/Users/apple/Desktop/BackEnd/Chatbot/backend/model/my_model',compile=False,custom_objects={"create_padding_mask": self.create_padding_mask})
+        model = tf.keras.models.load_model('model/my_model',compile=False,custom_objects={"create_padding_mask": self.create_padding_mask})
         self.model = model
 
-        data = pd.read_csv('/Users/apple/Desktop/BackEnd/Chatbot/backend/dataset/ChatbotData (1).csv')
-        bar_data=pd.read_csv('/Users/apple/Desktop/BackEnd/Chatbot/backend/dataset/자유대화 (1).csv')
+        data = pd.read_csv('dataset/ChatbotData (1).csv')
+        bar_data=pd.read_csv('dataset/자유대화 (1).csv')
         train_data = pd.concat([data, bar_data],ignore_index=True)
         train_data = train_data.sample(frac=1).reset_index(drop=True)
         questions = []
@@ -88,10 +92,10 @@ class FeelModel():
         self.initialize()
 
     def initialize(self, ):
-        self.model = tf.keras.models.load_model('/Users/apple/Desktop/BackEnd/Chatbot/backend/model/feel_model.h5')
+        self.model = tf.keras.models.load_model('model/feel_model.h5')
         self.tokenizer = Tokenizer(25000)
         X_train = []
-        with open('/Users/apple/Desktop/BackEnd/Chatbot/backend/dataset/X_train_feel.csv', 'r', newline='') as file:
+        with open('dataset/X_train_feel.csv', 'r', newline='', encoding='UTF-8') as file:
             myreader = csv.reader(file, delimiter=',')
             for rows in myreader:
                 X_train.append(rows)
@@ -114,10 +118,10 @@ class AlcholModel():
 
     def initialize(self, ):
         from keras.models import load_model
-        self.model = load_model('/Users/apple/Desktop/BackEnd/Chatbot/backend/model/alchol_model.h5')
+        self.model = load_model('model/alchol_model.h5')
         self.label_list = [1.0, 3.0, 2.0, 0.0]
         X_train = []
-        with open('/Users/apple/Desktop/BackEnd/Chatbot/backend/dataset/X_train_alchol.csv', 'r', newline='') as file:
+        with open('dataset/X_train_alchol.csv', 'r', newline='', encoding='UTF-8') as file:
             myreader = csv.reader(file, delimiter=',')
             for rows in myreader:
                 X_train.append(rows)
@@ -133,3 +137,28 @@ class AlcholModel():
         cat_list=['무알콜', '0-10', '10-20', '20-30']
         # print(cat_list[int(category)], score[0, score.argmax()])
         return cat_list[int(category)]
+
+
+class TasteModel():
+    def __init__(self):
+        self.initialize()
+
+    def initialize(self, ):
+        self.model = loaded_model = load_model('model/taste_model.h5')
+        self.tokenizer = Tokenizer(25000)
+        X_train = []
+        with open('dataset/X_train (2).csv', 'r', newline='', encoding='UTF-8') as file:
+            myreader = csv.reader(file, delimiter=',')
+            for rows in myreader:
+                X_train.append(rows)
+        self.tokenizer.fit_on_texts(X_train)
+        self.label_list=['단맛', '신맛', '쓴맛']
+
+    def predict(self,sentence):
+        token_stc = sentence.split()
+        encode_stc = self.tokenizer.texts_to_sequences([token_stc])
+        pad_stc = pad_sequences(encode_stc, maxlen=8)
+
+        score = self.model.predict(pad_stc)
+        category=self.label_list[score.argmax()]
+        print(category, score[0, score.argmax()])
