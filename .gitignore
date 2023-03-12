@@ -1,7 +1,2 @@
-.vs/
-
-backend/venv/
+venv/
 backend/model/my_model/
-
-
-frontend/node_modules/
