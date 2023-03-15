@@ -4,9 +4,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 from konlpy.tag import Okt
 
-resultData = pd.read_csv("/Users/apple/Desktop/BackEnd/Chatbot/backend/dataset/coc_result.csv의 사본")
+resultData = pd.read_csv("dataset/coc_result.csv의 사본")
 resultData=resultData.drop(['Unnamed: 0'], axis=1)
-data = pd.read_csv('/Users/apple/Desktop/BackEnd/Chatbot/backend/dataset/칵테일 데이터 최종 (1).csv', low_memory=False, index_col=0)
+data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False, index_col=0)
 data = data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
 dummy = data
 Cluster1_list = list(resultData[resultData.cluster == 0].data_index)
@@ -35,7 +35,7 @@ class CosineSimilarity():
         self.initialize()
 
     def initialize(self, ):
-        self.data = pd.read_csv('/Users/apple/Desktop/BackEnd/Chatbot/backend/dataset/칵테일 데이터 최종 (1).csv', low_memory=False, index_col=0)
+        self.data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False, index_col=0)
         #resultdata가 군집화 결과물
         self.data = self.data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
         
@@ -46,17 +46,17 @@ class CosineSimilarity():
             similarity = dot_product/l2_norm     
             return similarity
     
-    def cal_deg(self, degree):
+    def calculate_degree(self, degree):
         if (degree=='무알콜'):
             self.result_cluster.loc[self.result_cluster['도수*'] == 0, 'point'] +=1
-        elif (degree=='하'):
+        elif (degree=='0~10'):
             self.result_cluster.loc[(self.result_cluster['도수*'] > 0) & (self.result_cluster['도수*'] <=10), 'point'] +=1
-        elif (degree=='중'):
+        elif (degree=='10~20'):
             self.result_cluster.loc[(self.result_cluster['도수*'] > 10) & (self.result_cluster['도수*'] <=20), 'point'] +=1
         else:
             self.result_cluster.loc[self.result_cluster['도수*'] > 20, 'point'] +=1
 
-    def cal_ing(self,ingredient_input):
+    def calculate_ingredient(self,ingredient_input):
         okt = Okt()
         text = ingredient_input
         recipedata = okt.nouns(text)
@@ -83,7 +83,7 @@ class CosineSimilarity():
         self.result_cluster['재료유사도'] = sim_list
         self.result_cluster.loc[self.result_cluster['도수*'] >=0, 'point'] +=(self.result_cluster['재료유사도']*3)
 
-    def cal_talk(self, free_talk1, free_talk2, etc_input):
+    def calculate_talk(self, free_talk1, free_talk2, etc_input):
         okt = Okt()
         explanation=list(self.result_cluster['설명*'])
         for i in range(len(explanation)):
@@ -116,9 +116,9 @@ class CosineSimilarity():
         self.result_cluster = pd.concat([cluster1,cluster2])
         self.result_cluster['point'] = 0
 
-        self.cal_deg(degree)
-        self.cal_ing(ingredient_input)
-        self.cal_talk(free_talk1, free_talk2, etc_input)
+        self.calculate_degree(degree)
+        self.calculate_ingredient(ingredient_input)
+        self.calculate_talk(free_talk1, free_talk2, etc_input)
 
         idx=self.result_cluster['point'].idxmax()
         cocktail=data.loc[idx]

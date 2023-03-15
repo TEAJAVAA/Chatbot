@@ -1,5 +1,10 @@
 from flask import Flask, jsonify, request
 from model import TransModel, FeelModel, AlcholModel, TasteModel
+from cosine import CosineSimilarity
+import pandas as pd
+import json
+
+cosineSim=CosineSimilarity()
 
 feelModel=FeelModel()
 transModel=TransModel()
@@ -10,8 +15,21 @@ app = Flask(__name__)
 
 
 @app.route('/hello')
-def say_hello_world():
+def hello():
     return {'result': "Hello World"}
+
+
+@app.route('/recommend_cocktail', methods=['POST'])
+def recommend_cocktail():
+    reply = cosineSim.predict(degree_input, ingredient_input, free_talk1, free_talk2, etc_input)
+    print(reply, type(reply))
+    cocktail_name = reply.name
+    
+    reply = reply.to_json(force_ascii=False, orient = 'records', indent=4)
+    reply = json.loads(reply)
+    reply.insert(0, cocktail_name)
+
+    return jsonify(result="success", reply=reply)
 
 @app.route('/viewAll', methods=['POST'])
 def viewAll():
@@ -66,8 +84,7 @@ def message():
     elif info == "extra":
         global etc_input
         etc_input = data['message']['text']
-        return viewAll()
-        # 마지막 멘트 + 추천으로 넘어갈수 있도록~
+        return recommend_cocktail()
 
     else:
         return jsonify(result="error")

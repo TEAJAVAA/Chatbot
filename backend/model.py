@@ -134,7 +134,7 @@ class AlcholModel():
         pad_stc = pad_sequences(encode_stc, maxlen=5)
         score = self.model.predict(pad_stc)
         category=self.label_list[score.argmax()]
-        cat_list=['무알콜', '0-10', '10-20', '20-30']
+        cat_list=['무알콜', '0~10', '10~20', '20~30']
         # print(cat_list[int(category)], score[0, score.argmax()])
         return cat_list[int(category)]
 
@@ -147,7 +147,7 @@ class TasteModel():
         self.model = loaded_model = load_model('model/taste_model.h5')
         self.tokenizer = Tokenizer(25000)
         X_train = []
-        with open('dataset/X_train (2).csv', 'r', newline='', encoding='UTF-8') as file:
+        with open('dataset/X_train_taste.csv', 'r', newline='', encoding='UTF-8') as file:
             myreader = csv.reader(file, delimiter=',')
             for rows in myreader:
                 X_train.append(rows)

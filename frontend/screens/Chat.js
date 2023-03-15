@@ -23,6 +23,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { ImageBackground } from 'react-native';
 const backImage = require("../assets/backImage2.png");
 
+url = "http://192.168.91.4:5001"
+
 
 export default function Chat() {
 
@@ -178,7 +180,8 @@ export default function Chat() {
             },
         };
 
-        fetch("http://10.200.147.16:5001/message", message_info)
+
+        fetch(url + "/message", message_info)
 
             .then((response) => response.json())
             .then((response) => {
