@@ -18,7 +18,7 @@ class TransModel():
         self.initialize()
 
     def initialize(self, ):
-        model = tf.keras.models.load_model('model/my_model',compile=False,custom_objects={"create_padding_mask": self.create_padding_mask})
+        model = tf.keras.models.load_model('/Users/huijing/reactnative/backend/my_model',compile=False,custom_objects={"create_padding_mask": self.create_padding_mask})
         self.model = model
 
         data = pd.read_csv('dataset/ChatbotData (1).csv')
@@ -92,7 +92,7 @@ class FeelModel():
         self.initialize()
 
     def initialize(self, ):
-        self.model = tf.keras.models.load_model('model/feel_model.h5')
+        self.model = tf.keras.models.load_model('/Users/huijing/reactnative/backend/model/feel_model.h5')
         self.tokenizer = Tokenizer(25000)
         X_train = []
         with open('dataset/X_train_feel.csv', 'r', newline='', encoding='UTF-8') as file:
@@ -118,10 +118,10 @@ class AlcholModel():
 
     def initialize(self, ):
         from keras.models import load_model
-        self.model = load_model('model/alchol_model.h5')
+        self.model = load_model('/Users/huijing/reactnative/backend/model/alchol_model.h5')
         self.label_list = [1.0, 3.0, 2.0, 0.0]
         X_train = []
-        with open('dataset/X_train_alchol.csv', 'r', newline='', encoding='UTF-8') as file:
+        with open('/Users/huijing/reactnative/backend/dataset/X_train_alchol.csv', 'r', newline='', encoding='UTF-8') as file:
             myreader = csv.reader(file, delimiter=',')
             for rows in myreader:
                 X_train.append(rows)
@@ -144,10 +144,10 @@ class TasteModel():
         self.initialize()
 
     def initialize(self, ):
-        self.model = loaded_model = load_model('model/taste_model.h5')
+        self.model = loaded_model = load_model('/Users/huijing/reactnative/backend/model/taste_model.h5')
         self.tokenizer = Tokenizer(25000)
         X_train = []
-        with open('dataset/X_train (2).csv', 'r', newline='', encoding='UTF-8') as file:
+        with open('/Users/huijing/reactnative/backend/dataset/X_train (2).csv', 'r', newline='', encoding='UTF-8') as file:
             myreader = csv.reader(file, delimiter=',')
             for rows in myreader:
                 X_train.append(rows)
