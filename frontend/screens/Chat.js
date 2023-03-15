@@ -23,6 +23,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { ImageBackground } from 'react-native';
 const backImage = require("../assets/backImage2.png");
 
+//For testing
+const cocktailImage = require("../assets/redcocktailimage.png");
+const testurl = "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
 url = "http://192.168.91.4:5001"
 
 
@@ -41,6 +44,7 @@ export default function Chat() {
     const EXTRA_MSG = "추가로 하고 싶은 말씀이 있나요?";
 
 
+    // App code start
     useEffect(() => {
         if (N == 0) {
             info[0] = "feel";
@@ -48,6 +52,7 @@ export default function Chat() {
             setMessages([
                 {
                     _id: Date.now(),
+                    image: testurl,
                     text: FEEL_MSG,
                     createdAt: new Date(),
                     user: 'BOT_USER',
@@ -55,9 +60,10 @@ export default function Chat() {
             ]);
             addDoc(collection(database, auth?.currentUser?.email), {
                 _id: Date.now(),
+                image: testurl,
                 createdAt: new Date(),
                 text: FEEL_MSG,
-                user: 'BOT_USER'
+                user: 'BOT_USER',
             });
         }
     }, []);
@@ -76,7 +82,8 @@ export default function Chat() {
                     _id: doc.data()._id,
                     createdAt: doc.data().createdAt.toDate(),
                     text: doc.data().text,
-                    user: doc.data().user
+                    image: doc.data().image,
+                    user: doc.data().user,
                 }))
             );
         });
