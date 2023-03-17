@@ -5,7 +5,7 @@ import React, {
     useCallback
 } from 'react';
 import { Button, SafeAreaView, StyleSheet, Image, View, TouchableOpacity, Text } from 'react-native';
-import { ChatHeaderBar, GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
+import { ChatHeaderBar, GiftedChat, Bubble, Send, MessageImage } from 'react-native-gifted-chat';
 import {
     collection,
     addDoc,
@@ -25,8 +25,8 @@ const backImage = require("../assets/backImage2.png");
 
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
-const testurl = "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-url = "http://192.168.91.4:5001"
+const testurl = "https://github.com/gradeten/Image/blob/main/assets/cat.png?raw=true";
+const url = "http://10.200.0.195:5001";
 
 
 export default function Chat() {
@@ -187,7 +187,6 @@ export default function Chat() {
             },
         };
 
-
         fetch(url + "/message", message_info)
 
             .then((response) => response.json())
@@ -257,7 +256,7 @@ export default function Chat() {
     }
 
 
-
+    // Send Button Style
     const renderSend = (props) => {
         return (
             <Send {...props}>
@@ -267,6 +266,18 @@ export default function Chat() {
             </Send>
         );
     }
+
+    // Message Image Button Style
+    const renderMessageImage =(props) => {
+        return (
+          <MessageImage
+            {...props}
+            imageStyle={{
+              width: '98%',
+              resizeMode: 'cover'
+            }}
+          />
+        )}
 
     return (
         // <>
@@ -296,6 +307,7 @@ export default function Chat() {
                 onSend={messages => onSend(messages)}
                 alwaysShowSend
                 renderSend={renderSend}
+                renderMessageImage={renderMessageImage}
                 messagesContainerStyle={{
                     // backgroundColor: '#fff'
                 }}
