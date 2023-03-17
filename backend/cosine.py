@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+import math
 from konlpy.tag import Okt
 
 resultData = pd.read_csv("dataset/cocResult2.csv")
@@ -61,7 +62,6 @@ class CosineSimilarity():
         text = ingredient_input
         recipedata = okt.nouns(text)
         recipedata = ', '.join(s for s in recipedata)
-
         recipe_list=list(self.result_cluster['레시피*'])
         recipe_list.append(recipedata)
         doc_list = recipe_list
@@ -80,18 +80,27 @@ class CosineSimilarity():
         sim_list.pop()
         recipe_list.pop()
 
-        self.result_cluster['재료유사도'] = sim_list
-        self.result_cluster.loc[self.result_cluster['도수*'] >=0, 'point'] +=(self.result_cluster['재료유사도']*3)
+        if math.isnan(sim_list[1]):
+            self.result_cluster['재료유사도'] = 0
+        else :
+            self.result_cluster['재료유사도'] = sim_list
+            self.result_cluster.loc[self.result_cluster['도수*'] >=0, 'point'] +=(self.result_cluster['재료유사도']*3)
+        
 
     def calculate_talk(self, free_talk1, free_talk2, etc_input):
         okt = Okt()
         explanation=list(self.result_cluster['설명*'])
         for i in range(len(explanation)):
             explanation[i] =str(explanation[i])
+
+        
         explanation.append(free_talk1+free_talk2+etc_input)
+
         for i in range(len(explanation)):
             explanation[i] = okt.nouns(explanation[i])
             explanation[i] = ', '.join(s for s in explanation[i])
+
+        
         doc_list = explanation
 
         tfidf_vect_simple = TfidfVectorizer()
@@ -107,9 +116,11 @@ class CosineSimilarity():
 
         sim_list.pop()
         explanation.pop()
-
-        self.result_cluster['대화 유사도'] = sim_list
-        self.result_cluster.loc[self.result_cluster['도수*'] >=0, 'point'] +=self.result_cluster['대화 유사도']
+        if math.isnan(sim_list[1]):
+            self.result_cluster['대화 유사도'] = 0
+        else :
+            self.result_cluster['대화 유사도'] = sim_list
+            self.result_cluster.loc[self.result_cluster['도수*'] >=0, 'point'] +=self.result_cluster['대화 유사도']
 
     def predict(self, feel_input, taste_input, degree, ingredient_input,free_talk1, free_talk2, etc_input):
         if(feel_input=='기쁨'):
@@ -128,7 +139,6 @@ class CosineSimilarity():
             else:
                 self.result_cluster = pd.concat([cluster2,cluster5,cluster7])
 
-
         else:
             if(taste_input=='단맛'):
                 self.result_cluster = pd.concat([cluster2,cluster9,cluster10])
@@ -144,7 +154,7 @@ class CosineSimilarity():
         self.calculate_talk(free_talk1, free_talk2, etc_input)
 
         idx=self.result_cluster['point'].idxmax()
-        cocktail=data.loc[idx]
+        cocktail=self.data.loc[idx]
         print(cocktail)
         return cocktail
         #cocktail.name, coctail[0]:당도, [1]:도수, [2]:색상, [3]:베이스, [4]:레시피, [5]:설명

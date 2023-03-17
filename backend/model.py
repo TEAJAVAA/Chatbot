@@ -103,6 +103,8 @@ class FeelModel():
         self.emotion_list = ['분노', '기쁨', '불안', '당황', '슬픔', '상처']
 
     def predict(self,sentence):
+        if sentence is None:
+            return '분노'
         token_stc = sentence.split()
         encode_stc = self.tokenizer.texts_to_sequences([token_stc])
         pad_stc = pad_sequences(encode_stc, maxlen=15)
@@ -129,6 +131,8 @@ class AlcholModel():
         self.tokenizer.fit_on_texts(X_train)
         
     def predict(self, sentence):
+        if sentence is None:
+            return '10~20'
         token_stc = sentence.split()
         encode_stc = self.tokenizer.texts_to_sequences([token_stc])
         pad_stc = pad_sequences(encode_stc, maxlen=5)
@@ -155,6 +159,8 @@ class TasteModel():
         self.label_list=['단맛', '신맛', '쓴맛']
 
     def predict(self,sentence):
+        if sentence is None:
+            return '단맛'
         token_stc = sentence.split()
         encode_stc = self.tokenizer.texts_to_sequences([token_stc])
         pad_stc = pad_sequences(encode_stc, maxlen=8)

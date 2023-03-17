@@ -3,7 +3,7 @@ import pandas as pd
 import json
 
 cosineSim=CosineSimilarity()
-reply = cosineSim.predict("0~10", "레몬이나", "우울할때 마실 술 주세여", "샤워후에 마실 수 있는게 있을까요?", "레몬의 신맛이 담겼으면 좋겠어요.")
+reply = cosineSim.predict("기쁨", "쓴맛","0~10", "ㄹ", "d", "w", "ㅐ")
 print(type(reply))
 cocktail_name = reply.name
 
