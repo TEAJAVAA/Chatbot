@@ -11,7 +11,7 @@ transModel=TransModel()
 alcholModel = AlcholModel()
 tasteModel = TasteModel()
 
-app = Flask(__name__)
+app = Flask(__name__) 
 
 
 @app.route('/hello')
@@ -40,7 +40,7 @@ def viewAll():
 def message():
     data = request.get_json(force=True)
     message = data['message']['text']
-
+   
     info = data['information']
     if info == "feel":
         global feel_input

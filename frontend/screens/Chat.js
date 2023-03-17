@@ -26,7 +26,7 @@ const backImage = require("../assets/backImage2.png");
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://github.com/gradeten/Image/blob/main/assets/cat.png?raw=true";
-const url = "http://10.200.0.195:5001";
+const url = "http://10.200.26.180:5001";
 
 
 export default function Chat() {
@@ -186,7 +186,7 @@ export default function Chat() {
                 "Content-Type": "application/json",
             },
         };
-
+        
         fetch(url + "/message", message_info)
 
             .then((response) => response.json())
