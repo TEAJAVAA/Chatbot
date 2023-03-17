@@ -119,12 +119,18 @@ class CosineSimilarity():
         self.calculate_degree(degree)
         self.calculate_ingredient(ingredient_input)
         self.calculate_talk(free_talk1, free_talk2, etc_input)
-
+        
         idx=self.result_cluster['point'].idxmax()
         cocktail=data.loc[idx]
         print(cocktail)
         return cocktail
         #cocktail.name, coctail[0]:당도, [1]:도수, [2]:색상, [3]:베이스, [4]:레시피, [5]:설명
+        '''
+        idx1=self.result_cluster['point'].nlargest(1)
+        idx2=self.result_cluster['point'].nlargest(2)
+        idx3=self.result_cluster['point'].nlargest(3)
+        '''
+        
 
 
 

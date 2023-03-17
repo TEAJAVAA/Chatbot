@@ -3,9 +3,10 @@
     "",
     "\\backend",
     "\\backend\\dataset",
+    "\\backend\\model",
     "\\frontend",
     "\\frontend\\screens"
   ],
-  "SelectedNode": "\\backend\\dataset\\칵테일 데이터 최종 (1).csv",
+  "SelectedNode": "\\.gitignore",
   "PreviewInSolutionExplorer": false
 }

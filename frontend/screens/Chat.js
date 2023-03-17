@@ -26,7 +26,7 @@ const backImage = require("../assets/backImage2.png");
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-url = "http://192.168.91.4:5001"
+url = "http://10.200.26.180:5001"
 
 
 export default function Chat() {

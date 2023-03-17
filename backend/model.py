@@ -18,7 +18,7 @@ class TransModel():
         self.initialize()
 
     def initialize(self, ):
-        model = tf.keras.models.load_model('/Users/huijing/reactnative/backend/my_model',compile=False,custom_objects={"create_padding_mask": self.create_padding_mask})
+        model = tf.keras.models.load_model('my_model',compile=False,custom_objects={"create_padding_mask": self.create_padding_mask})
         self.model = model
 
         data = pd.read_csv('dataset/ChatbotData (1).csv')

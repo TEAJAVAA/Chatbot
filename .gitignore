@@ -1,2 +1,10 @@
 venv/
+backend/venv/
 backend/model/my_model/
+backend/my_model/
+.vs/
+.DS_Store
+LICENSE
+backend/.DS_Store
+frontend/node_modules/
+
