@@ -4,7 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 from konlpy.tag import Okt
 
-resultData = pd.read_csv("dataset/coc_result.csv의 사본")
+resultData = pd.read_csv("dataset/cocResult2.csv")
 resultData=resultData.drop(['Unnamed: 0'], axis=1)
 data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False, index_col=0)
 data = data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
@@ -111,9 +111,32 @@ class CosineSimilarity():
         self.result_cluster['대화 유사도'] = sim_list
         self.result_cluster.loc[self.result_cluster['도수*'] >=0, 'point'] +=self.result_cluster['대화 유사도']
 
-    def predict(self, degree, ingredient_input,free_talk1, free_talk2, etc_input):
-        #여기서 모델 돌려서 군집이랑 연결시킴, 해서 군집 1,2산출됐다고 가정할게
-        self.result_cluster = pd.concat([cluster1,cluster2])
+    def predict(self, feel_input, taste_input, degree, ingredient_input,free_talk1, free_talk2, etc_input):
+        if(feel_input=='기쁨'):
+            if(taste_input=='단맛'):
+                self.result_cluster = pd.concat([cluster1,cluster9,cluster10])
+            elif(taste_input=='신맛'):
+                self.result_cluster = pd.concat([cluster3,cluster5,cluster10])
+            else:
+                self.result_cluster = pd.concat([cluster3,cluster5,cluster6])
+
+        elif(feel_input=='슬픔' or feel_input=='불안' or feel_input=='상처'):
+            if(taste_input=='단맛'):
+                self.result_cluster = pd.concat([cluster9,cluster10])
+            elif(taste_input=='신맛'):
+                self.result_cluster = pd.concat([cluster3,cluster7,cluster10])
+            else:
+                self.result_cluster = pd.concat([cluster2,cluster5,cluster7])
+
+
+        else:
+            if(taste_input=='단맛'):
+                self.result_cluster = pd.concat([cluster2,cluster9,cluster10])
+            elif(taste_input=='신맛'):
+                self.result_cluster = pd.concat([cluster3,cluster7])
+            else:
+                self.result_cluster = pd.concat([cluster4,cluster8])
+                
         self.result_cluster['point'] = 0
 
         self.calculate_degree(degree)

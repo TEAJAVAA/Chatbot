@@ -18,7 +18,7 @@ class TransModel():
         self.initialize()
 
     def initialize(self, ):
-        model = tf.keras.models.load_model('/Users/huijing/reactnative/backend/my_model',compile=False,custom_objects={"create_padding_mask": self.create_padding_mask})
+        model = tf.keras.models.load_model('model/my_model',compile=False,custom_objects={"create_padding_mask": self.create_padding_mask})
         self.model = model
 
         data = pd.read_csv('dataset/ChatbotData (1).csv')
@@ -109,7 +109,7 @@ class FeelModel():
 
         score = self.model.predict(pad_stc)
         print(self.emotion_list[score.argmax()], score[0, score.argmax()])
-        return (self.emotion_list[score.argmax()], score[0, score.argmax()])
+        return self.emotion_list[score.argmax()]
 
 
 class AlcholModel():
@@ -162,3 +162,4 @@ class TasteModel():
         score = self.model.predict(pad_stc)
         category=self.label_list[score.argmax()]
         print(category, score[0, score.argmax()])
+        return category
