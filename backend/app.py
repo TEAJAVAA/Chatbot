@@ -22,14 +22,21 @@ def hello():
 @app.route('/recommend_cocktail', methods=['POST'])
 def recommend_cocktail():
     reply = cosineSim.predict(feel_input,taste_input, degree_input,ingredient_input, free_talk1, free_talk2, etc_input)
-    print(reply, type(reply))
-    cocktail_name = reply.name
-    
-    reply = reply.to_json(force_ascii=False, orient = 'records', indent=4)
-    reply = json.loads(reply)
-    reply.insert(0, cocktail_name)
+    cocktails = []
 
-    return jsonify(result="success", reply=reply)
+    for i in range(3):
+        cocktail_name = reply[i].name
+    
+        cocktail = reply[i].to_json(force_ascii=False, orient = 'records', indent=4)
+        cocktail = json.loads(cocktail)
+        cocktail.insert(0, cocktail_name)
+
+        cocktails.append(cocktail)
+
+    reply = "당신을 위한 칵테일을 추천드립니다!"
+
+    return jsonify(result="success", reply=reply, cocktail1=cocktails[0], cocktail2=cocktails[1],cocktail3=cocktails[2])
+    
 
 @app.route('/viewAll', methods=['POST'])
 def viewAll():

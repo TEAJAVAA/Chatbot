@@ -193,6 +193,11 @@ export default function Chat() {
             .then((response) => {
                 if (response.result === "success") {
                     sendBotResponse(response.reply);
+                    if (response.cocktail1) {
+                        sendBotResponse(response.cocktail1)
+                        sendBotResponse(response.cocktail2)
+                        sendBotResponse(response.cocktail3)
+                    }
                 } else alert("sendBot ERROR");
             });
     },

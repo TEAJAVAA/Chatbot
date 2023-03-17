@@ -153,10 +153,16 @@ class CosineSimilarity():
         self.calculate_ingredient(ingredient_input)
         self.calculate_talk(free_talk1, free_talk2, etc_input)
         
-        idx=self.result_cluster['point'].idxmax()
-        cocktail=self.data.loc[idx]
-        print(cocktail)
-        return cocktail
+        idx=self.result_cluster['point'].nlargest(3)
+        idx1 = idx.index[0]
+        idx2 = idx.index[1]
+        idx3 = idx.index[2]
+
+        cocktail1=self.data.loc[idx1]
+        cocktail2=self.data.loc[idx2] 
+        cocktail3=self.data.loc[idx3]
+        print(cocktail1, cocktail2, cocktail3)
+        return (cocktail1, cocktail2, cocktail3)
         #cocktail.name, coctail[0]:당도, [1]:도수, [2]:색상, [3]:베이스, [4]:레시피, [5]:설명
         '''
         idx1=self.result_cluster['point'].nlargest(1)
