@@ -21,7 +21,7 @@ def hello():
 
 @app.route('/recommend_cocktail', methods=['POST'])
 def recommend_cocktail():
-    reply = cosineSim.predict(degree_input, ingredient_input, free_talk1, free_talk2, etc_input)
+    reply = cosineSim.predict(feel_input,taste_input, degree_input,ingredient_input, free_talk1, free_talk2, etc_input)
     print(reply, type(reply))
     cocktail_name = reply.name
     
