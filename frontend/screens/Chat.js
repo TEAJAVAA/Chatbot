@@ -4,7 +4,8 @@ import React, {
     useLayoutEffect,
     useCallback
 } from 'react';
-import { Button, SafeAreaView, StyleSheet, Image, View, TouchableOpacity, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, Image, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { Card, Button } from 'react-native-elements';
 import { ChatHeaderBar, GiftedChat, Bubble, Send, MessageImage } from 'react-native-gifted-chat';
 import {
     collection,
@@ -26,7 +27,7 @@ const backImage = require("../assets/backImage2.png");
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://github.com/gradeten/Image/blob/main/assets/cat.png?raw=true";
-const url = "http://10.200.26.180:5001";
+const url = "http://172.30.1.94:5001";
 
 
 export default function Chat() {
@@ -84,6 +85,8 @@ export default function Chat() {
                     text: doc.data().text,
                     image: doc.data().image,
                     user: doc.data().user,
+                    isOptions: doc.data().isOptions,
+                    data: doc.data().data,
                 }))
             );
         });
@@ -194,15 +197,69 @@ export default function Chat() {
                 if (response.result === "success") {
                     sendBotResponse(response.reply);
                     if (response.cocktail1) {
-                        sendBotResponse(response.cocktail1)
-                        sendBotResponse(response.cocktail2)
-                        sendBotResponse(response.cocktail3)
+                        // sendBotResponse(response.cocktail1)
+                        // sendBotResponse(response.cocktail2)
+                        // sendBotResponse(response.cocktail3)
+                        sendBotCocktail(response.cocktail1, response.cocktail2, response.cocktail3);
                     }
                 } else alert("sendBot ERROR");
             });
     },
         [messages]
     );
+
+    // Chatbot Responds
+    const sendBotCocktail = (c1, c2, c3) => {
+        let msg = {
+            _id: Date.now(),
+            // text,
+            createdAt: new Date(),
+            user: 'BOT_USER',
+            isOptions: true,
+            data: [
+                {
+                    title: c1[0],
+                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    color: c1[3]
+                },
+                {
+                    title: c2[0],
+                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    color: c2[3]
+                },
+                {
+                    title: c3[0],
+                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    color: c3[3]
+                },
+            ]
+        };
+        setMessages((previousMessages) => GiftedChat.append(previousMessages, msg));
+        addDoc(collection(database, auth?.currentUser?.email), {
+            _id: Date.now(),
+            // text,
+            createdAt: new Date(),
+            user: 'BOT_USER',
+            isOptions: true,
+            data: [
+                {
+                    title: c1[0],
+                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    color: c1[3]
+                },
+                {
+                    title: c2[0],
+                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    color: c2[3]
+                },
+                {
+                    title: c3[0],
+                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    color: c3[3]
+                },
+            ]
+        });
+    };
 
     // Chatbot Responds
     const sendBotResponse = (text) => {
@@ -322,6 +379,42 @@ export default function Chat() {
                 }}
                 renderAvatar={() => null}
                 renderBubble={props => {
+
+                    if(props.currentMessage.isOptions){
+                        return (
+                            <ScrollView style={{backgroundColor: 'white'}}
+                            horizontal={true}>
+                                {props.currentMessage.data.map((item) => (
+                                    <Card 
+                                        containerStyle={{
+                                            padding:0, 
+                                            borderRadius:15, 
+                                            paddingBottom: 7,
+                                            overflow: 'hidden',
+                                        }} 
+                                        key={item.title}>
+                                        <Card.Image style={{width: 200, height: 190 ,tintColor: item.color}}
+                                        resizeMode="cover"
+                                        source={{uri: item.image}}>
+                                        </Card.Image>
+                                        <Card.Divider/>
+                                        <Card.Title style={{fontSize:'16'}}>{item.title}</Card.Title>
+                                        <Button
+                                            title="상세보기"
+                                            buttonStyle={{ backgroundColor: 'rgba(39, 39, 39, 1)' }}
+                                            titleStyle={{
+                                                color: "white",
+                                                fontSize: 14,
+                                            }}
+                                            style={{height: 35}}
+                                            onPress={() => sendBotResponse(item.title)}
+                                        />
+                                    </Card>
+                                ))}
+                            </ScrollView>
+                        )
+                    }
+
                     return (
                         <Bubble
                             {...props}
