@@ -27,7 +27,7 @@ const backImage = require("../assets/backImage2.png");
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://github.com/gradeten/Image/blob/main/assets/cat.png?raw=true";
-const url = "http://10.200.184.67:5001";
+const url = "http://10.200.121.175:5001";
 
 
 export default function Chat() {
@@ -35,6 +35,7 @@ export default function Chat() {
     const [N, setN] = useState(0);
     const [info, setInfo] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [state, setState] = useState("true");
     const navigation = useNavigation();
     const FEEL_MSG = "오늘 기분이 어떠신가요?";
     const FREE1_MSG = "MBTI가 뭐에요?";
@@ -43,6 +44,23 @@ export default function Chat() {
     const RATE_MSG = "도수는 어느 정도로 원하시나요?";
     const INGRI_MSG = "어떤 재료를 선호하시나요?";
     const EXTRA_MSG = "추가로 하고 싶은 말씀이 있나요?";
+    const [isTyping, setIsTyping] = useState(false);
+
+    const renderFooter = (props) => {
+        if (isTyping==true)
+        {
+            return (
+                
+                <View>
+                    <Image source={require('../assets/textanimation.gif')} 
+                    style={styles.dotanimation}
+                    isTyping={isTyping}
+                    /> 
+                </View>
+            )
+        }
+    }
+
 
 
     // App code start
@@ -50,6 +68,7 @@ export default function Chat() {
         if (N == 0) {
             info[0] = "feel";
             setN(N + 1);
+            setIsTyping(false);
             setMessages([
                 {
                     _id: Date.now(),
@@ -189,17 +208,20 @@ export default function Chat() {
                 "Content-Type": "application/json",
             },
         };
+        setIsTyping(true);
         
         fetch(url + "/message", message_info)
-
+            
             .then((response) => response.json())
             .then((response) => {
                 if (response.result === "success") {
+                    setIsTyping(false);
                     sendBotResponse(response.reply);
                     if (response.cocktail1) {
                         // sendBotResponse(response.cocktail1)
                         // sendBotResponse(response.cocktail2)
                         // sendBotResponse(response.cocktail3)
+                        setIsTyping(false);
                         sendBotCocktail(response.cocktail1, response.cocktail2, response.cocktail3);
                     }
                 } else alert("sendBot ERROR");
@@ -263,6 +285,7 @@ export default function Chat() {
 
     // Chatbot Responds
     const sendBotResponse = (text) => {
+
         let msg = {
             _id: Date.now(),
             text,
@@ -302,6 +325,7 @@ export default function Chat() {
 
     // Chatbot asks question
     const sendBotQuestion = (botquestion) => {
+        setIsTyping(false);
         let msg = {
             _id: Date.now(),
             text: botquestion,
@@ -378,11 +402,13 @@ export default function Chat() {
                     borderRadius: 20,
                 }}
                 renderAvatar={() => null}
+                renderFooter={renderFooter}
+                isTyping={isTyping}
                 renderBubble={props => {
 
                     if(props.currentMessage.isOptions){
                         return (
-                            <ScrollView style={{backgroundColor: 'white'}}
+                             <ScrollView showsHorizontalScrollIndicator={false} style={{backgroundColor: 'white'}}
                             horizontal={true}>
                                 {props.currentMessage.data.map((item) => (
                                     <Card 
@@ -451,6 +477,13 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         color: '#fff',
         width: 100,
-        height: 100
+        height: 100,
+    },
+    dotanimation: {
+        left: 20,
+        width:65,
+        height:30,
+        borderRadius: 150 / 2,
+        overflow: "hidden",
     }
 });
