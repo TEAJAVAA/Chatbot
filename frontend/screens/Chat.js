@@ -27,7 +27,7 @@ const backImage = require("../assets/backImage2.png");
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://github.com/gradeten/Image/blob/main/assets/cat.png?raw=true";
-const url = "http://172.30.1.94:5001";
+const url = "http://10.200.27.16:5001";
 
 
 export default function Chat() {
@@ -398,7 +398,7 @@ export default function Chat() {
                                         source={{uri: item.image}}>
                                         </Card.Image>
                                         <Card.Divider/>
-                                        <Card.Title style={{fontSize:'16'}}>{item.title}</Card.Title>
+                                        <Card.Title style={{fontSize:16}}>{item.title}</Card.Title>
                                         <Button
                                             title="상세보기"
                                             buttonStyle={{ backgroundColor: 'rgba(39, 39, 39, 1)' }}

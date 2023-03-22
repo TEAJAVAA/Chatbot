@@ -3,13 +3,15 @@ from model import TransModel, FeelModel, AlcholModel, TasteModel
 from cosine import CosineSimilarity
 import pandas as pd
 import json
+import random
 
 cosineSim=CosineSimilarity()
-
 feelModel=FeelModel()
 transModel=TransModel()
 alcholModel = AlcholModel()
 tasteModel = TasteModel()
+
+BOT_replies = ['알겠습니다!', '알겠습니다.', '확인했어요!', '확인했습니다.', '잘 알겠습니다.', '좋은 선택이에요.', '멋진 선택이에요!', '추천에 참고할게요.', '안목이 탁월하시네요.', '저랑 통하셨네요.', '느낌이 좋네요.']
 
 app = Flask(__name__) 
 
@@ -74,19 +76,19 @@ def message():
     elif info == "taste":
         global taste_input
         taste_input = predict_taste()
-        reply = ["알겠습니다! "]
+        reply = random.choice(BOT_replies)
         return jsonify(result="success", reply=reply)
 
     elif info == "rate":
         global degree_input
         degree_input = predict_alchol()
-        reply = ["알겠습니다! "]
+        reply = random.choice(BOT_replies)
         return jsonify(result="success", reply=reply)
 
     elif info == "ingredient":
         global ingredient_input
         ingredient_input = data['message']['text']
-        reply = ["알겠습니다! "]
+        reply = random.choice(BOT_replies)
         return jsonify(result="success", reply=reply)
 
     elif info == "extra":
