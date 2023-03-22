@@ -485,5 +485,6 @@ const styles = StyleSheet.create({
         height:30,
         borderRadius: 150 / 2,
         overflow: "hidden",
+        bottom:10
     }
 });
