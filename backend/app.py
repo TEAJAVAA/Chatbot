@@ -34,7 +34,6 @@ def recommend_cocktail():
         cocktail.insert(0, cocktail_name)
 
         cocktails.append(cocktail)
-        print(cocktails)
 
     reply = "당신을 위한 칵테일을 추천드립니다!"
 

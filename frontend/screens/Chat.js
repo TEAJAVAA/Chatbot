@@ -26,8 +26,8 @@ const backImage = require("../assets/backImage2.png");
 
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
-const testurl = "https://github.com/gradeten/Image/blob/main/assets/cat.png?raw=true";
-const url = "http://192.168.0.5:5001";
+const testurl = "https://github.com/unul09/imageupload/blob/main/dog.png?raw=true";
+const url = "http://192.168.91.4:5001";
 
 
 export default function Chat() {
@@ -218,9 +218,9 @@ export default function Chat() {
                     setIsTyping(false);
                     sendBotResponse(response.reply);
                     if (response.cocktail1) {
-                        // sendBotResponse(response.cocktail1)
-                        // sendBotResponse(response.cocktail2)
-                        // sendBotResponse(response.cocktail3)
+                        //sendBotResponse(response.cocktail1)
+                        //sendBotResponse(response.cocktail2)
+                        //sendBotResponse(response.cocktail3)
                         setIsTyping(false);
                         sendBotCocktail(response.cocktail1, response.cocktail2, response.cocktail3);
                     }
@@ -240,18 +240,19 @@ export default function Chat() {
             isOptions: true,
             data: [
                 {
+                    // 토핑정보는 c1[8]에 ... 토핑 없을경우 null값으로 전달됨
                     title: c1[0],
-                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail' + c1[7] + '.png?raw=true',
                     color: c1[3]
                 },
                 {
                     title: c2[0],
-                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail' + c2[7] + '.png?raw=true',
                     color: c2[3]
                 },
                 {
                     title: c3[0],
-                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail' + c3[7] + '.png?raw=true',
                     color: c3[3]
                 },
             ]
@@ -265,18 +266,19 @@ export default function Chat() {
             isOptions: true,
             data: [
                 {
+                    // 토핑정보는 c1[8]에 ... 토핑 없을경우 null값으로 전달됨
                     title: c1[0],
-                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail'+c1[7]+'.png?raw=true',
                     color: c1[3]
                 },
                 {
                     title: c2[0],
-                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail' + c2[7] + '.png?raw=true',
                     color: c2[3]
                 },
                 {
                     title: c3[0],
-                    image: 'https://github.com/gradeten/Image/blob/main/assets/cocktail.png?raw=true',
+                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail' + c3[7] + '.png?raw=true',
                     color: c3[3]
                 },
             ]
