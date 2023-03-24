@@ -5,8 +5,7 @@ import numpy as np
 import math
 from konlpy.tag import Okt
 
-resultData = pd.read_csv("dataset/cocResult2.csv")
-resultData=resultData.drop(['Unnamed: 0'], axis=1)
+resultData = pd.read_csv("dataset/cocResult2.csv", index_col=0)
 data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
 data = data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
 dummy = data

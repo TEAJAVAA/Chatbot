@@ -16,6 +16,21 @@ BOT_replies = ['알겠습니다!', '알겠습니다.', '확인했어요!', '확�
 app = Flask(__name__) 
 
 
+@app.route('/search',methods=['POST'])
+def search():
+    data = request.get_json(force=True)
+    message = data['message']['text']
+    
+    coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
+    coc_data = coc_data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
+
+    coc_result = coc_data[coc_data['이름*'].str.contains(message) | coc_data['레시피*'].str.contains(message)]
+    print(coc_result)
+
+    # 보내는 형식은 아직 확정 안됨~ 오류날수도 있음~ 확인할거면 postman에서 확인하는 것으로..
+    return jsonify(result="success", cocktail=coc_result)
+
+
 @app.route('/hello')
 def hello():
     return {'result': "Hello World"}

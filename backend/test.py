@@ -1,20 +1,14 @@
-from cosine import CosineSimilarity
 import pandas as pd
-import json
 
-cosineSim=CosineSimilarity()
-reply = cosineSim.predict("기쁨", "쓴맛","0~10", "ㄹ", "d", "w", "ㅐ")
+data = input("검색: ")
+message = data
+coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
+coc_data = coc_data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
 
-cocktails = []
+coc_data[coc_data['레시피*'].str.contains('보드카')]
 
-for i in range(3):
-    cocktail_name = reply[i].name
-    
-    cocktail = reply[i].to_json(force_ascii=False, orient = 'records', indent=4)
-    cocktail = json.loads(cocktail)
-    cocktail.insert(0, cocktail_name)
+coc_data[coc_data['이름*'].str.contains('보드카')]
 
-    cocktails.append(cocktail)
+coc_result = coc_data[coc_data['이름*'].str.contains(message) | coc_data['레시피*'].str.contains(message)]
 
-
-print(cocktails)
+print(coc_result)
