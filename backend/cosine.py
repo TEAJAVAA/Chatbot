@@ -7,36 +7,36 @@ from konlpy.tag import Okt
 
 resultData = pd.read_csv("dataset/cocResult2.csv")
 resultData=resultData.drop(['Unnamed: 0'], axis=1)
-data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False, index_col=0)
+data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
 data = data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
 dummy = data
 Cluster1_list = list(resultData[resultData.cluster == 0].data_index)
-cluster1 = dummy.loc[Cluster1_list]
+cluster1 = dummy.loc[dummy["이름*"].isin(Cluster1_list)]
 Cluster2_list = list(resultData[resultData.cluster == 1].data_index)
-cluster2 = dummy.loc[Cluster2_list]
+cluster2 = dummy.loc[dummy["이름*"].isin(Cluster2_list)]
 Cluster3_list = list(resultData[resultData.cluster == 2].data_index)
-cluster3 = dummy.loc[Cluster3_list]
+cluster3 = dummy.loc[dummy["이름*"].isin(Cluster3_list)]
 Cluster4_list = list(resultData[resultData.cluster == 3].data_index)
-cluster4 = dummy.loc[Cluster4_list]
+cluster4 = dummy.loc[dummy["이름*"].isin(Cluster4_list)]
 Cluster5_list = list(resultData[resultData.cluster == 4].data_index)
-cluster5 = dummy.loc[Cluster5_list]
+cluster5 = dummy.loc[dummy["이름*"].isin(Cluster5_list)]
 Cluster6_list = list(resultData[resultData.cluster == 5].data_index)
-cluster6 = dummy.loc[Cluster6_list]
+cluster6 = dummy.loc[dummy["이름*"].isin(Cluster6_list)]
 Cluster7_list = list(resultData[resultData.cluster == 6].data_index)
-cluster7 = dummy.loc[Cluster7_list]
+cluster7 = dummy.loc[dummy["이름*"].isin(Cluster7_list)]
 Cluster8_list = list(resultData[resultData.cluster == 7].data_index)
-cluster8 = dummy.loc[Cluster8_list]
+cluster8 = dummy.loc[dummy["이름*"].isin(Cluster8_list)]
 Cluster9_list = list(resultData[resultData.cluster == 8].data_index)
-cluster9 = dummy.loc[Cluster9_list]
+cluster9 = dummy.loc[dummy["이름*"].isin(Cluster9_list)]
 Cluster10_list = list(resultData[resultData.cluster == 9].data_index)
-cluster10 = dummy.loc[Cluster10_list]
+cluster10 = dummy.loc[dummy["이름*"].isin(Cluster10_list)]
 
 class CosineSimilarity():
     def __init__(self):
         self.initialize()
 
     def initialize(self, ):
-        self.data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False, index_col=0)
+        self.data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
         #resultdata가 군집화 결과물
         self.data = self.data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
         

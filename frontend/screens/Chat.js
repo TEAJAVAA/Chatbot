@@ -27,7 +27,7 @@ const backImage = require("../assets/backImage2.png");
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://github.com/unul09/imageupload/blob/main/dog.png?raw=true";
-const url = "http://192.168.91.4:5001";
+const url = "http://10.200.24.147:5001";
 
 
 export default function Chat() {

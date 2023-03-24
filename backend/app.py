@@ -27,12 +27,9 @@ def recommend_cocktail():
     cocktails = []
 
     for i in range(3):
-        cocktail_name = reply[i].name
-    
+        
         cocktail = reply[i].to_json(force_ascii=False, orient = 'records', indent=4)
         cocktail = json.loads(cocktail)
-        cocktail.insert(0, cocktail_name)
-
         cocktails.append(cocktail)
 
     reply = "당신을 위한 칵테일을 추천드립니다!"
