@@ -243,18 +243,33 @@ export default function Chat() {
                 {
                     // 토핑정보는 c1[8]에 ... 토핑 없을경우 null값으로 전달됨
                     title: c1[0],
+                    taste: c1[1],
+                    degree: c1[2],
+                    base: c1[4],
+                    recipe: c1[5],
+                    about: c1[6],
                     glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c1[7] + '.png?raw=true',
                     content: 'https://github.com/unul09/imageupload/blob/main/content' + c1[7] + '.png?raw=true',
                     color: c1[3]
                 },
                 {
                     title: c2[0],
+                    taste: c2[1],
+                    degree: c2[2],
+                    base: c2[4],
+                    recipe: c2[5],
+                    about: c2[6],
                     glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c2[7] + '.png?raw=true',
                     content: 'https://github.com/unul09/imageupload/blob/main/content' + c2[7] + '.png?raw=true',
                     color: c2[3]
                 },
                 {
                     title: c3[0],
+                    taste: c3[1],
+                    degree: c3[2],
+                    base: c3[4],
+                    recipe: c3[5],
+                    about: c3[6],
                     glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c3[7] + '.png?raw=true',
                     content: 'https://github.com/unul09/imageupload/blob/main/content' + c3[7] + '.png?raw=true',
                     color: c3[3]
@@ -272,18 +287,33 @@ export default function Chat() {
                 {
                     // 토핑정보는 c1[8]에 ... 토핑 없을경우 null값으로 전달됨
                     title: c1[0],
+                    taste: c1[1],
+                    degree: c1[2],
+                    base: c1[4],
+                    recipe: c1[5],
+                    about: c1[6],
                     glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c1[7] + '.png?raw=true',
                     content: 'https://github.com/unul09/imageupload/blob/main/content' + c1[7] + '.png?raw=true',
                     color: c1[3]
                 },
                 {
                     title: c2[0],
+                    taste: c2[1],
+                    degree: c2[2],
+                    base: c2[4],
+                    recipe: c2[5],
+                    about: c2[6],
                     glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c2[7] + '.png?raw=true',
                     content: 'https://github.com/unul09/imageupload/blob/main/content' + c2[7] + '.png?raw=true',
                     color: c2[3]
                 },
                 {
                     title: c3[0],
+                    taste: c3[1],
+                    degree: c3[2],
+                    base: c3[4],
+                    recipe: c3[5],
+                    about: c3[6],
                     glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c3[7] + '.png?raw=true',
                     content: 'https://github.com/unul09/imageupload/blob/main/content' + c3[7] + '.png?raw=true',
                     color: c3[3]
@@ -428,11 +458,11 @@ export default function Chat() {
                                             overflow: 'hidden',
                                         }} 
                                         key={item.title}>
-                                            <Card.Image style={{width: 200, height: 190, tintColor: '#262628'}} 
+                                            <Card.Image style={{width: 180, height: 170, tintColor: '#262628'}} 
                                             source={require("/Users/huijing/reactnative/frontend/assets/backImage.png")}>
-                                                <Card.Image style={{width: 200, height: 190, tintColor: 'white'}} 
+                                                <Card.Image style={{width: 180, height: 170, tintColor: 'white'}} 
                                                 source={{uri: item.glass}}>
-                                                    <Card.Image style={{width: 200, height: 190, tintColor: item.color}}
+                                                    <Card.Image style={{width: 180, height: 170, tintColor: item.color}}
                                                     // resizeMode="cover"
                                                     source={{uri: item.content}}>
                                                         {/* <Card.Image style={{width: 100, height: 100, tintColor: '#b22222'}} 
@@ -451,7 +481,18 @@ export default function Chat() {
                                                 fontSize: 14,
                                             }}
                                             style={{height: 35}}
-                                            onPress={() => navigation.navigate("Detail")}
+                                            onPress={() => navigation.navigate("Detail", 
+                                            {
+                                                name:item.title,
+                                                taste:item.taste,
+                                                degree:item.degree,
+                                                base:item.base,
+                                                recipe:item.recipe,
+                                                about:item.about,
+                                                glass:item.glass,
+                                                content:item.content,
+                                                color:item.color,
+                                            })}
                                         />
                                     </Card>
                                 ))}

@@ -48,6 +48,7 @@ def recommend_cocktail():
         cocktails.append(cocktail)
 
     reply = "당신을 위한 칵테일을 추천드립니다!"
+    print(cocktails[0])
 
     return jsonify(result="success", reply=reply, cocktail1=cocktails[0], cocktail2=cocktails[1],cocktail3=cocktails[2])
     

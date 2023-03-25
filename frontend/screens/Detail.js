@@ -1,12 +1,13 @@
 import React, { useEffect, useLayoutEffect } from "react";
-import { View, TouchableOpacity, Text, Image, StyleSheet } from "react-native";
+import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
 
-const Detail = () => {
+const Detail = ({ route, navigation }) => {
 
-    const navigation = useNavigation();
+    // const navigation = useNavigation();
+    const { name, color, glass, content, taste, degree, base, recipe, about } = route.params;
 
     useEffect(() => {
         navigation.setOptions({
@@ -19,11 +20,35 @@ const Detail = () => {
                 onPress={() => navigation.navigate("Chat")}>
                     <AntDesign name="close" size={24} color={colors.black} style={styles.backButton} />
             </TouchableOpacity>
-            <Image source={{uri:"https://github.com/unul09/imageupload/blob/main/cocktail1.png?raw=true"}} 
-            style={{width: 200, height: 190}}
-            >
 
-            </Image>
+            <View style={styles.centercontainer}>
+            <Text style={styles.titletext}>{name}</Text>
+            </View>
+
+            <ImageBackground source={require('../assets/color.jpeg')} style={styles.background}>
+                <View style={styles.centercontainer}>
+                    <ImageBackground source={{uri:glass}} 
+                    style={styles.cocktailGlass}
+                    >
+                        <Image source={{uri:content}} 
+                        style={{tintColor: color, width: 200, height: 190,}}
+                        >
+                        </Image>
+                    </ImageBackground>
+                </View>
+            </ImageBackground>
+
+            <Text style={styles.subtext}>설명:</Text>
+            <Text style={styles.text}>{about}</Text>
+            <Text style={styles.subtext}>레시피:</Text>
+            <Text style={styles.text}>{recipe}</Text>
+            <Text style={styles.subtext}>당도:</Text>
+            <Text style={styles.text}>{taste}</Text>
+            <Text style={styles.subtext}>도수:</Text>
+            <Text style={styles.text}>{degree}</Text>
+            <Text style={styles.subtext}>베이스:</Text>
+            <Text style={styles.text}>{base}</Text>
+
         </View>
     );
     };
@@ -35,6 +60,14 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff",
     },
+    background:{
+        marginTop: 10,
+        height:220,
+    },
+    centercontainer:{
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     detailtext: {
         flex: 1,
         alignItems:"center",
@@ -45,4 +78,32 @@ const styles = StyleSheet.create({
         marginTop: 15,
         marginLeft: 15,
     },
+    cocktailGlass: {
+        marginTop: 10,
+        width: 200, 
+        height: 190,
+    },
+    cocktailContent: {
+        width: 200, 
+        height: 190,
+        tintColor: colors,
+    },
+    titletext:{
+        marginTop: 10,
+        marginBottom: 5,
+        fontSize: 22,
+        fontWeight: 'bold',
+    },
+    subtext:{
+        marginTop:25, 
+        marginLeft:20,
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    text:{ 
+        marginTop:5, 
+        marginLeft:20,
+        marginRight:20,
+        fontSize: 18,
+    }
 });
