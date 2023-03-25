@@ -27,7 +27,7 @@ const backImage = require("../assets/backImage2.png");
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://github.com/unul09/imageupload/blob/main/dog.png?raw=true";
-const url = "http://10.200.24.147:5001";
+const url = "http://172.30.1.28:5001";
 
 
 export default function Chat() {
@@ -35,7 +35,7 @@ export default function Chat() {
     const [N, setN] = useState(0);
     const [info, setInfo] = useState([]);
     const [messages, setMessages] = useState([]);
-    const [state, setState] = useState("true");
+    // const [state, setState] = useState("true");
     const navigation = useNavigation();
     const FEEL_MSG = "오늘 기분이 어떠신가요?";
     const FREE1_MSG = "MBTI가 뭐에요?";
@@ -46,6 +46,7 @@ export default function Chat() {
     const EXTRA_MSG = "추가로 하고 싶은 말씀이 있나요?";
     const [isTyping, setIsTyping] = useState(false);
 
+    // loading
     const renderFooter = (props) => {
         if (isTyping==true)
         {
@@ -242,17 +243,20 @@ export default function Chat() {
                 {
                     // 토핑정보는 c1[8]에 ... 토핑 없을경우 null값으로 전달됨
                     title: c1[0],
-                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail' + c1[7] + '.png?raw=true',
+                    glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c1[7] + '.png?raw=true',
+                    content: 'https://github.com/unul09/imageupload/blob/main/content' + c1[7] + '.png?raw=true',
                     color: c1[3]
                 },
                 {
                     title: c2[0],
-                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail' + c2[7] + '.png?raw=true',
+                    glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c2[7] + '.png?raw=true',
+                    content: 'https://github.com/unul09/imageupload/blob/main/content' + c2[7] + '.png?raw=true',
                     color: c2[3]
                 },
                 {
                     title: c3[0],
-                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail' + c3[7] + '.png?raw=true',
+                    glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c3[7] + '.png?raw=true',
+                    content: 'https://github.com/unul09/imageupload/blob/main/content' + c3[7] + '.png?raw=true',
                     color: c3[3]
                 },
             ]
@@ -268,17 +272,20 @@ export default function Chat() {
                 {
                     // 토핑정보는 c1[8]에 ... 토핑 없을경우 null값으로 전달됨
                     title: c1[0],
-                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail'+c1[7]+'.png?raw=true',
+                    glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c1[7] + '.png?raw=true',
+                    content: 'https://github.com/unul09/imageupload/blob/main/content' + c1[7] + '.png?raw=true',
                     color: c1[3]
                 },
                 {
                     title: c2[0],
-                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail' + c2[7] + '.png?raw=true',
+                    glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c2[7] + '.png?raw=true',
+                    content: 'https://github.com/unul09/imageupload/blob/main/content' + c2[7] + '.png?raw=true',
                     color: c2[3]
                 },
                 {
                     title: c3[0],
-                    image: 'https://github.com/unul09/imageupload/blob/main/cocktail' + c3[7] + '.png?raw=true',
+                    glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c3[7] + '.png?raw=true',
+                    content: 'https://github.com/unul09/imageupload/blob/main/content' + c3[7] + '.png?raw=true',
                     color: c3[3]
                 },
             ]
@@ -407,7 +414,7 @@ export default function Chat() {
                 renderFooter={renderFooter}
                 isTyping={isTyping}
                 renderBubble={props => {
-
+                    // Show cocktails in card
                     if(props.currentMessage.isOptions){
                         return (
                              <ScrollView showsHorizontalScrollIndicator={false} style={{backgroundColor: 'white'}}
@@ -421,10 +428,19 @@ export default function Chat() {
                                             overflow: 'hidden',
                                         }} 
                                         key={item.title}>
-                                        <Card.Image style={{width: 200, height: 190 ,tintColor: item.color}}
-                                        resizeMode="cover"
-                                        source={{uri: item.image}}>
-                                        </Card.Image>
+                                            <Card.Image style={{width: 200, height: 190, tintColor: '#262628'}} 
+                                            source={require("/Users/huijing/reactnative/frontend/assets/backImage.png")}>
+                                                <Card.Image style={{width: 200, height: 190, tintColor: 'white'}} 
+                                                source={{uri: item.glass}}>
+                                                    <Card.Image style={{width: 200, height: 190, tintColor: item.color}}
+                                                    // resizeMode="cover"
+                                                    source={{uri: item.content}}>
+                                                        {/* <Card.Image style={{width: 100, height: 100, tintColor: '#b22222'}} 
+                                                        source={require("/Users/huijing/reactnative/frontend/assets/backImage2.png")}>
+                                                        </Card.Image> */}
+                                                    </Card.Image>
+                                                </Card.Image>
+                                            </Card.Image>
                                         <Card.Divider/>
                                         <Card.Title style={{fontSize:16}}>{item.title}</Card.Title>
                                         <Button
@@ -435,7 +451,7 @@ export default function Chat() {
                                                 fontSize: 14,
                                             }}
                                             style={{height: 35}}
-                                            onPress={() => sendBotResponse(item.title)}
+                                            onPress={() => navigation.navigate("Detail")}
                                         />
                                     </Card>
                                 ))}
@@ -490,3 +506,4 @@ const styles = StyleSheet.create({
         bottom:10
     }
 });
+

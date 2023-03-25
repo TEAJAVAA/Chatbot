@@ -11,6 +11,7 @@ import Login from './screens/Login';
 import Signup from './screens/Signup';
 import Chat from './screens/Chat';
 import Home from './screens/Home';
+import Detail from './screens/Detail';
 
 const Stack = createStackNavigator();
 const AuthenticatedUserContext = createContext({});
@@ -24,15 +25,6 @@ return (
   );
 };
 
-// function LogoTitle() {
-//   return (
-//     <Image
-//       style={{ width: '100%', height: 180 }}
-//       source={require('./assets/backImage2.png')}
-//     />
-//   );
-// }
-
 function ChatStack() {
   return (
     <Stack.Navigator defaultScreenOptions={Home}>
@@ -44,6 +36,10 @@ function ChatStack() {
       //   header: (props) => (<LogoTitle {...props} />)
       // }}
       />
+      <Stack.Screen name='Detail' 
+      options={{headerShown:false, presentation: 'modal'}} 
+      component={Detail}
+       />
     </Stack.Navigator>
   );
 }
