@@ -30,6 +30,15 @@ def search():
     # 보내는 형식은 아직 확정 안됨~ 오류날수도 있음~ 확인할거면 postman에서 확인하는 것으로..
     return jsonify(result="success", cocktail=coc_result)
 
+@app.route('/detail',methods=['POST'])
+def detail():
+    data = request.get_json(force=True)
+    message = data['message']['text']
+    coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False, index_col=0)
+    coc_data = coc_data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
+    cocktail=coc_data[coc_data['이름*']==message]
+    print(cocktail)
+    return jsonify(result="success", cocktail=cocktail)
 
 @app.route('/hello')
 def hello():
