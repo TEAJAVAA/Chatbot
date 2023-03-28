@@ -3,19 +3,27 @@ import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground } from
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
-const url = "http://10.200.162.246:5001";
+const url = "http://10.200.1.182:5001";
 
 const Detail = ({ route, navigation }) => {
 
     // const navigation = useNavigation();
     const {name} = route.params;
     // const n = JSON.stringify({name}.name);
+    const taste = "";
+    const degree = "";
+    const base = "";
+    const recipe = "";
+    const about = "";
+    const glass = "";
+    const content = "";
+    const color = "";
 
     useEffect(() => {
         const name_info = {
             method: "POST",
             body: JSON.stringify({
-                name: JSON.stringify({name}.name)
+                name: ({name}.name)
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -25,7 +33,7 @@ const Detail = ({ route, navigation }) => {
         fetch(url + "/detail", name_info)
             .then((response) => response.json())
             .then((response) => {
-                console.log((response));
+                console.log(response.cocktail);
             });
     });
 
@@ -45,7 +53,7 @@ const Detail = ({ route, navigation }) => {
             </View>
 
             <ImageBackground source={require('../assets/color.jpeg')} style={styles.background}>
-                {/* <View style={styles.centercontainer}>
+                <View style={styles.centercontainer}>
                     <ImageBackground source={{uri:glass}} 
                     style={styles.cocktailGlass}
                     >
@@ -54,7 +62,7 @@ const Detail = ({ route, navigation }) => {
                         >
                         </Image>
                     </ImageBackground>
-                </View> */}
+                </View>
             </ImageBackground>
 
             {/* <Text style={styles.subtext}>설명:</Text>
