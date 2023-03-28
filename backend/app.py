@@ -24,12 +24,12 @@ def search():
         data = request.get_json(force=True)
         message = data['message']['text']
         coc_result = coc_data[coc_data['이름*'].str.contains(message) | coc_data['레시피*'].str.contains(message)]
-        #print(coc_result)
-        # 보내는 형식은 아직 확정 안됨~ 오류날수도 있음~ 확인할거면 postman에서 확인하는 것으로..
+        print(coc_result)
         coc_result = coc_result.to_dict()
         return jsonify(result="success", cocktail=coc_result)
     else:
         coc_result_all = coc_data.to_dict()
+        print("칵테일 정보 모두 전송 ...")
         return jsonify(result="success", cocktail=coc_result_all)
 
 @app.route('/detail',methods=['POST'])
