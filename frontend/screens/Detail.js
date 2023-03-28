@@ -51,7 +51,6 @@ const Detail = ({ route, navigation }) => {
     });
 
 
-
     return (
         <View style={styles.container}>
             <TouchableOpacity
@@ -86,10 +85,10 @@ const Detail = ({ route, navigation }) => {
             <Text style={styles.text}>{info.degree}</Text>
             <Text style={styles.subtext}>베이스:</Text>
             <Text style={styles.text}>{info.base}</Text>
-
         </View>
+
     );
-    };
+}
 
     export default Detail;
 
