@@ -39,6 +39,7 @@ def detail():
     message = data['name']
     print(message)
     print(len(message))
+    
     coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
     coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
     cocktail=coc_data[coc_data['name']==message]
@@ -46,7 +47,7 @@ def detail():
 
     cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
     cocktail = json.loads(cocktail)
-    print(cocktail)
+    # print(cocktail)
     return jsonify(result="success", cocktail=cocktail)
 
 @app.route('/hello')

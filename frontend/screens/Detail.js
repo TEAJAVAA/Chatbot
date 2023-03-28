@@ -1,23 +1,23 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
-const url = "http://172.20.10.2:5001";
+const url = "http://10.200.120.105:5001";
 
 const Detail = ({ route, navigation }) => {
 
     // const navigation = useNavigation();
     const {name} = route.params;
-    // const n = JSON.stringify({name}.name);
-    const taste = "";
-    const degree = "";
-    const base = "";
-    const recipe = "";
-    const about = "";
-    const glass = "";
-    const content = "";
-    const color = "";
+ 
+    const [base, setBase] = useState("");
+    const [taste, setTaste] = useState("");
+    const [degree, setDegree] = useState("");
+    const [recipe, setRecipe] = useState("");
+    const [about, setAbout] = useState("");
+    const [glass, setGlass] = useState("");
+    const [content, setContent] = useState("");
+    const [color, setColor] = useState("");
 
     useEffect(() => {
         const name_info = {
@@ -33,11 +33,17 @@ const Detail = ({ route, navigation }) => {
         fetch(url + "/detail", name_info)
             .then((response) => response.json())
             .then((response) => {
-                console.log(response.cocktail);
+                console.log(response.cocktail[0].base);
+                setBase(response.cocktail[0].base);
+                setColor(response.cocktail[0].color);
+                setDegree(response.cocktail[0].degree);
+                setGlass("https://github.com/unul09/imageupload/blob/main/glass" + response.cocktail[0].glass + ".png?raw=true");
+                setContent("https://github.com/unul09/imageupload/blob/main/content" + response.cocktail[0].glass + ".png?raw=true");
+                setAbout(response.cocktail[0].info);
+                setRecipe(response.cocktail[0].recipe);
+                setTaste(response.cocktail[0].sweet);
             });
     });
-
-    
 
 
 
@@ -54,10 +60,10 @@ const Detail = ({ route, navigation }) => {
 
             <ImageBackground source={require('../assets/color.jpeg')} style={styles.background}>
                 <View style={styles.centercontainer}>
-                    <ImageBackground source={{uri:glass}} 
+                    <ImageBackground source={{uri:glass || null}} 
                     style={styles.cocktailGlass}
                     >
-                        <Image source={{uri:content}} 
+                        <Image source={{uri:content || null}} 
                         style={{tintColor: color, width: 200, height: 190,}}
                         >
                         </Image>
@@ -65,7 +71,7 @@ const Detail = ({ route, navigation }) => {
                 </View>
             </ImageBackground>
 
-            {/* <Text style={styles.subtext}>설명:</Text>
+            <Text style={styles.subtext}>설명:</Text>
             <Text style={styles.text}>{about}</Text>
             <Text style={styles.subtext}>레시피:</Text>
             <Text style={styles.text}>{recipe}</Text>
@@ -74,7 +80,7 @@ const Detail = ({ route, navigation }) => {
             <Text style={styles.subtext}>도수:</Text>
             <Text style={styles.text}>{degree}</Text>
             <Text style={styles.subtext}>베이스:</Text>
-            <Text style={styles.text}>{base}</Text> */}
+            <Text style={styles.text}>{base}</Text>
 
         </View>
     );
