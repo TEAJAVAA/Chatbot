@@ -35,10 +35,10 @@ def search():
 @app.route('/detail',methods=['POST'])
 def detail():
     data = request.get_json(force=True)
-    print(data)
+    # print(data)
     message = data['name']
-    print(message)
-    print(len(message))
+    # print(message)
+    # print(len(message))
     
     coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
     coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
