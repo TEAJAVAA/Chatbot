@@ -19,11 +19,11 @@ app = Flask(__name__)
 @app.route('/search',methods=['GET', 'POST'])
 def search():
     coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
-    coc_data = coc_data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
+    coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
     if request.method=='POST':
         data = request.get_json(force=True)
         message = data['message']['text']
-        coc_result = coc_data[coc_data['이름*'].str.contains(message) | coc_data['레시피*'].str.contains(message)]
+        coc_result = coc_data[coc_data['name'].str.contains(message) | coc_data['recipe'].str.contains(message)]
         print(coc_result)
         coc_result = coc_result.to_dict()
         return jsonify(result="success", cocktail=coc_result)
@@ -40,8 +40,8 @@ def detail():
     print(message)
     print(len(message))
     coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
-    coc_data = coc_data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
-    cocktail=coc_data[coc_data['이름*']==message]
+    coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
+    cocktail=coc_data[coc_data['name']==message]
     # print(cocktail)
 
     cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)

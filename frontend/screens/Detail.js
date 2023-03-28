@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground } from
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
-const url = "http://10.200.1.182:5001";
+const url = "http://172.20.10.2:5001";
 
 const Detail = ({ route, navigation }) => {
 

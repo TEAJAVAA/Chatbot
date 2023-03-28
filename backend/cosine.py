@@ -7,28 +7,28 @@ from konlpy.tag import Okt
 
 resultData = pd.read_csv("dataset/cocResult2.csv", index_col=0)
 data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
-data = data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
+data = data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
 dummy = data
 Cluster1_list = list(resultData[resultData.cluster == 0].data_index)
-cluster1 = dummy.loc[dummy["이름*"].isin(Cluster1_list)]
+cluster1 = dummy.loc[dummy["name"].isin(Cluster1_list)]
 Cluster2_list = list(resultData[resultData.cluster == 1].data_index)
-cluster2 = dummy.loc[dummy["이름*"].isin(Cluster2_list)]
+cluster2 = dummy.loc[dummy["name"].isin(Cluster2_list)]
 Cluster3_list = list(resultData[resultData.cluster == 2].data_index)
-cluster3 = dummy.loc[dummy["이름*"].isin(Cluster3_list)]
+cluster3 = dummy.loc[dummy["name"].isin(Cluster3_list)]
 Cluster4_list = list(resultData[resultData.cluster == 3].data_index)
-cluster4 = dummy.loc[dummy["이름*"].isin(Cluster4_list)]
+cluster4 = dummy.loc[dummy["name"].isin(Cluster4_list)]
 Cluster5_list = list(resultData[resultData.cluster == 4].data_index)
-cluster5 = dummy.loc[dummy["이름*"].isin(Cluster5_list)]
+cluster5 = dummy.loc[dummy["name"].isin(Cluster5_list)]
 Cluster6_list = list(resultData[resultData.cluster == 5].data_index)
-cluster6 = dummy.loc[dummy["이름*"].isin(Cluster6_list)]
+cluster6 = dummy.loc[dummy["name"].isin(Cluster6_list)]
 Cluster7_list = list(resultData[resultData.cluster == 6].data_index)
-cluster7 = dummy.loc[dummy["이름*"].isin(Cluster7_list)]
+cluster7 = dummy.loc[dummy["name"].isin(Cluster7_list)]
 Cluster8_list = list(resultData[resultData.cluster == 7].data_index)
-cluster8 = dummy.loc[dummy["이름*"].isin(Cluster8_list)]
+cluster8 = dummy.loc[dummy["name"].isin(Cluster8_list)]
 Cluster9_list = list(resultData[resultData.cluster == 8].data_index)
-cluster9 = dummy.loc[dummy["이름*"].isin(Cluster9_list)]
+cluster9 = dummy.loc[dummy["name"].isin(Cluster9_list)]
 Cluster10_list = list(resultData[resultData.cluster == 9].data_index)
-cluster10 = dummy.loc[dummy["이름*"].isin(Cluster10_list)]
+cluster10 = dummy.loc[dummy["name"].isin(Cluster10_list)]
 
 class CosineSimilarity():
     def __init__(self):
@@ -37,7 +37,7 @@ class CosineSimilarity():
     def initialize(self, ):
         self.data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
         #resultdata가 군집화 결과물
-        self.data = self.data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
+        self.data = self.data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
         
 
     def cos_similarity(self,v1, v2):
@@ -48,20 +48,20 @@ class CosineSimilarity():
     
     def calculate_degree(self, degree):
         if (degree=='무알콜'):
-            self.result_cluster.loc[self.result_cluster['도수*'] == 0, 'point'] +=1
+            self.result_cluster.loc[self.result_cluster['degree'] == 0, 'point'] +=1
         elif (degree=='0~10'):
-            self.result_cluster.loc[(self.result_cluster['도수*'] > 0) & (self.result_cluster['도수*'] <=10), 'point'] +=1
+            self.result_cluster.loc[(self.result_cluster['degree'] > 0) & (self.result_cluster['degree'] <=10), 'point'] +=1
         elif (degree=='10~20'):
-            self.result_cluster.loc[(self.result_cluster['도수*'] > 10) & (self.result_cluster['도수*'] <=20), 'point'] +=1
+            self.result_cluster.loc[(self.result_cluster['degree'] > 10) & (self.result_cluster['degree'] <=20), 'point'] +=1
         else:
-            self.result_cluster.loc[self.result_cluster['도수*'] > 20, 'point'] +=1
+            self.result_cluster.loc[self.result_cluster['degree'] > 20, 'point'] +=1
 
     def calculate_ingredient(self,ingredient_input):
         okt = Okt()
         text = ingredient_input
         recipedata = okt.nouns(text)
         recipedata = ', '.join(s for s in recipedata)
-        recipe_list=list(self.result_cluster['레시피*'])
+        recipe_list=list(self.result_cluster['recipe'])
         recipe_list.append(recipedata)
         doc_list = recipe_list
         tfidf_vect_simple = TfidfVectorizer()
@@ -83,12 +83,12 @@ class CosineSimilarity():
             self.result_cluster['재료유사도'] = 0
         else :
             self.result_cluster['재료유사도'] = sim_list
-            self.result_cluster.loc[self.result_cluster['도수*'] >=0, 'point'] +=(self.result_cluster['재료유사도']*3)
+            self.result_cluster.loc[self.result_cluster['degree'] >=0, 'point'] +=(self.result_cluster['재료유사도']*3)
         
 
     def calculate_talk(self, free_talk1, free_talk2, etc_input):
         okt = Okt()
-        explanation=list(self.result_cluster['설명*'])
+        explanation=list(self.result_cluster['info'])
         for i in range(len(explanation)):
             explanation[i] =str(explanation[i])
 
@@ -119,7 +119,7 @@ class CosineSimilarity():
             self.result_cluster['대화 유사도'] = 0
         else :
             self.result_cluster['대화 유사도'] = sim_list
-            self.result_cluster.loc[self.result_cluster['도수*'] >=0, 'point'] +=self.result_cluster['대화 유사도']
+            self.result_cluster.loc[self.result_cluster['degree'] >=0, 'point'] +=self.result_cluster['대화 유사도']
 
     def predict(self, feel_input, taste_input, degree, ingredient_input,free_talk1, free_talk2, etc_input):
         if(feel_input=='기쁨'):

@@ -27,7 +27,7 @@ const backImage = require("../assets/backImage2.png");
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://github.com/unul09/imageupload/blob/main/dog.png?raw=true";
-const url = "http://10.200.1.182:5001";
+const url = "http://172.20.10.2:5001";
 
 
 export default function Chat() {
@@ -459,7 +459,7 @@ export default function Chat() {
                                         }} 
                                         key={item.title}>
                                             <Card.Image style={{width: 180, height: 170, tintColor: '#262628'}} 
-                                            source={require("/Users/huijing/reactnative/frontend/assets/backImage.png")}>
+                                            source={require("../assets/backImage.png")}>
                                                 <Card.Image style={{width: 180, height: 170, tintColor: 'white'}} 
                                                 source={{uri: item.glass}}>
                                                     <Card.Image style={{width: 180, height: 170, tintColor: item.color}}
