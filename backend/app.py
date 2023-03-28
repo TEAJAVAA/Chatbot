@@ -35,11 +35,11 @@ def search():
 @app.route('/detail',methods=['POST'])
 def detail():
     data = request.get_json(force=True)
-    message = data['message']['text']
+    message = data['name']
     coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
     coc_data = coc_data.drop(columns=['신맛내는거', '맛','키워드', 'Unnamed: 10','신맛내는거 포함 문자열'], axis=1)
     cocktail=coc_data[coc_data['이름*']==message]
-    print(cocktail)
+    # print(cocktail)
 
     cocktail = cocktail.to_dict()
     return jsonify(result="success", cocktail=cocktail)

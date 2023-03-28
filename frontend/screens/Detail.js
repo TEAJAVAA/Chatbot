@@ -3,16 +3,35 @@ import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground } from
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
+const url = "http://10.200.162.246:5001";
 
 const Detail = ({ route, navigation }) => {
 
     // const navigation = useNavigation();
-    const { name, color, glass, content, taste, degree, base, recipe, about } = route.params;
+    const {name} = route.params;
+    // const n = JSON.stringify({name}.name);
 
     useEffect(() => {
-        navigation.setOptions({
+        const name_info = {
+            method: "POST",
+            body: JSON.stringify({
+                name: JSON.stringify({name}.name)
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+
+        fetch(url + "/detail", name_info)
+            .then((response) => response.json())
+            .then((response) => {
+                console.log((response));
             });
-    }, [navigation]);
+    });
+
+    
+
+
 
     return (
         <View style={styles.container}>
@@ -26,7 +45,7 @@ const Detail = ({ route, navigation }) => {
             </View>
 
             <ImageBackground source={require('../assets/color.jpeg')} style={styles.background}>
-                <View style={styles.centercontainer}>
+                {/* <View style={styles.centercontainer}>
                     <ImageBackground source={{uri:glass}} 
                     style={styles.cocktailGlass}
                     >
@@ -35,10 +54,10 @@ const Detail = ({ route, navigation }) => {
                         >
                         </Image>
                     </ImageBackground>
-                </View>
+                </View> */}
             </ImageBackground>
 
-            <Text style={styles.subtext}>설명:</Text>
+            {/* <Text style={styles.subtext}>설명:</Text>
             <Text style={styles.text}>{about}</Text>
             <Text style={styles.subtext}>레시피:</Text>
             <Text style={styles.text}>{recipe}</Text>
@@ -47,7 +66,7 @@ const Detail = ({ route, navigation }) => {
             <Text style={styles.subtext}>도수:</Text>
             <Text style={styles.text}>{degree}</Text>
             <Text style={styles.subtext}>베이스:</Text>
-            <Text style={styles.text}>{base}</Text>
+            <Text style={styles.text}>{base}</Text> */}
 
         </View>
     );
