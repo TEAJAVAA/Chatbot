@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground } from
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
-const url = "http://172.30.1.65:5001";
+const url = "http://10.200.160.102:5001";
 
 const Detail = ({ route, navigation }) => {
 
@@ -58,13 +58,14 @@ const Detail = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                onPress={() => navigation.navigate("Chat")}>
-                    <AntDesign name="close" size={24} color={colors.black} style={styles.backButton} />
-            </TouchableOpacity>
 
-            <View style={styles.centercontainer}>
-            <Text style={styles.titletext}>{name}</Text>
+            <View style={styles.row}>
+                <TouchableOpacity
+                    onPress={() => navigation.goBack()}>
+                        <AntDesign name="left" size={24} color={colors.black} style={styles.backButton} />
+                </TouchableOpacity>
+                <Text style={styles.titletext}>{name}</Text>
+                <View></View>
             </View>
 
             <ImageBackground source={require('../assets/color.jpeg')} style={styles.background}>
@@ -117,8 +118,8 @@ const styles = StyleSheet.create({
     },
     backButton: {
         size: 16,
-        marginTop: 15,
-        marginLeft: 15,
+        // marginTop: 15,
+        marginLeft: 10,
     },
     cocktailGlass: {
         marginTop: 10,
@@ -131,8 +132,8 @@ const styles = StyleSheet.create({
         tintColor: colors,
     },
     titletext:{
-        marginTop: 10,
-        marginBottom: 5,
+        // marginTop: 10,
+        // marginBottom: 5,
         fontSize: 22,
         fontWeight: 'bold',
     },
@@ -147,5 +148,12 @@ const styles = StyleSheet.create({
         marginLeft:20,
         marginRight:20,
         fontSize: 18,
+    },
+    row: {
+        paddingTop: 50,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: 380,
     }
 });

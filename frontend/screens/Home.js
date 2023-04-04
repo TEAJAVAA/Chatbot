@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect } from "react";
-import { View, TouchableOpacity, Text, Image, StyleSheet } from "react-native";
+import { View, TouchableOpacity, Text, Image, StyleSheet, Keyboard, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from '@expo/vector-icons';
 import colors from '../colors';
@@ -7,9 +7,29 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { signOut } from 'firebase/auth';
 import { auth } from "../config/firebase";
-const backImage = require("../assets/backImage2.png");
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
+import { Card, Button } from 'react-native-elements';
+
 
 const Home = () => {
+    const data = [
+        {
+        title: 1,
+        glass: "https://github.com/unul09/imageupload/blob/main/glass1.png?raw=true",
+        content: "https://github.com/unul09/imageupload/blob/main/content1.png?raw=true",
+        },
+        {
+        title: 2,
+        glass: "https://github.com/unul09/imageupload/blob/main/glass1.png?raw=true",
+        content: "https://github.com/unul09/imageupload/blob/main/content1.png?raw=true",
+        },
+        {
+        title: 3,
+        glass: "https://github.com/unul09/imageupload/blob/main/glass1.png?raw=true",
+        content: "https://github.com/unul09/imageupload/blob/main/content1.png?raw=true",
+        },
+        
+      ];
 
     const navigation = useNavigation();
 
@@ -17,11 +37,13 @@ const Home = () => {
         signOut(auth).catch(error => console.log('Error logging out: ', error));
       };
 
-
+      
     useEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
-                <FontAwesome name="search" size={24} color={colors.gray} style={{marginLeft: 15}}/>
+                <TouchableOpacity>
+                <FontAwesome name="heart" size={24} color={'#fff'} style={{marginLeft: 15}}/>
+                </TouchableOpacity>
             ),
             headerRight: () => (
                 <TouchableOpacity
@@ -30,7 +52,7 @@ const Home = () => {
                   }}
                   onPress={onSignOut}
                 >
-                  <AntDesign name="logout" size={24} color={colors.gray} style={{marginRight: 10}}/>
+                  <AntDesign name="logout" size={24} color={'#fff'} style={{marginRight: 10}}/>
                 </TouchableOpacity>
               )
             });
@@ -38,12 +60,62 @@ const Home = () => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                onPress={() => navigation.navigate("Chat")}
-                style={styles.chatButton}
-            >
-                <Entypo name="chat" size={24} color={colors.lightGray} />
+
+            <View style={styles.centercontainer}>
+            <TouchableOpacity onPress={() => navigation.navigate("Search")} activeOpacity={1}>
+                <Image style={styles.searchbutton} source={require('../assets/searchbar.jpeg')}/>
             </TouchableOpacity>
+            </View>
+
+            <Text style={styles.welcometext}>칵테일 추천이 필요하신가요?</Text>
+
+            <View style={styles.centercontainer}>
+            <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+                <Image style={styles.chatbtn} source={require('../assets/chatbutton4.png')}/>
+            </TouchableOpacity>
+            </View>
+
+            <Text style={styles.welcometext2}>추천 칵테일</Text>
+
+            <View style={{height: 200}}>
+            <ScrollView showsHorizontalScrollIndicator={false} style={styles.scrollview}
+                            horizontal={true}>
+                <View style={styles.horizontal}>
+                {data.map((item) =>(
+                <TouchableOpacity onPress={() => navigation.navigate("Detail", 
+                {
+                    name:"어스퀘이크(진)",
+                })} 
+                >
+                <Card 
+                    containerStyle={{
+                        padding:0, 
+                        borderRadius:15, 
+                        // paddingBottom: 7,
+                        overflow: 'hidden',
+                    }} 
+                    key={item.title}>
+                     <Card.Image style={{width: 140, height: 130, tintColor: '#262628'}} 
+                        source={require("../assets/backImage.png")}>
+                            <Card.Image style={{width: 140, height: 130, tintColor: 'white'}} 
+                                source={{uri: item.glass}}>
+                                    <Card.Image style={{width: 140, height: 130, tintColor: 'purple'}}
+                                    source={{uri: item.content}}>
+                                        
+                                    </Card.Image>
+                                </Card.Image>
+                    </Card.Image>
+                    <Card.Divider/>
+                    <Card.Title style={{fontSize:16}}>어쩌구 칵테일</Card.Title>
+                </Card>
+                </TouchableOpacity>
+            ))}
+            </View>
+            </ScrollView>
+            </View>
+
+            <Text style={styles.welcometext2}>추천 칵테일</Text>
+
         </View>
     );
     };
@@ -53,8 +125,6 @@ const Home = () => {
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
             backgroundColor: "#fff",
         },
         chatButton: {
@@ -76,5 +146,43 @@ const Home = () => {
             marginBottom: 50,
             right:10,
             bottom:20
+        },
+        centercontainer:{
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        buttoncontainer: {
+            margin: 20,
+        },
+        searchbutton: {
+            marginTop: 16,
+            width: 415,
+            height: 42,
+        },
+        welcometext: {
+            margin: 20,
+            marginTop: 40,
+            marginBottom: 15,
+            fontWeight: "bold",
+            fontSize: 20,
+        },
+        welcometext2: {
+            margin: 20,
+            marginTop: 40,
+            marginBottom: 0,
+            fontWeight: "bold",
+            fontSize: 20,
+        },
+        chatbtn: {
+            borderRadius: 15,
+            width: 380,
+            height: 150,
+        },
+        scrollview: {
+            backgroundColor: 'white',
+        },
+        horizontal: {
+            flexDirection: 'row',
+            height: 200,
         }
     });

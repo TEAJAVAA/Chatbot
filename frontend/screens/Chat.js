@@ -27,7 +27,7 @@ const backImage = require("../assets/backImage2.png");
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://github.com/unul09/imageupload/blob/main/dog.png?raw=true";
-const url = "http://172.30.1.65:5001";
+const url = "http://10.200.160.102:5001";
 
 
 export default function Chat() {
@@ -435,19 +435,23 @@ export default function Chat() {
                              <ScrollView showsHorizontalScrollIndicator={false} style={{backgroundColor: 'white'}}
                             horizontal={true}>
                                 {props.currentMessage.data.map((item) => (
+                                    <TouchableOpacity onPress={() => navigation.navigate("Detail", 
+                                    {
+                                        name:item.title,
+                                    })}>
                                     <Card 
                                         containerStyle={{
                                             padding:0, 
                                             borderRadius:15, 
-                                            paddingBottom: 7,
+                                            // paddingBottom: 7,
                                             overflow: 'hidden',
                                         }} 
                                         key={item.title}>
-                                            <Card.Image style={{width: 180, height: 170, tintColor: '#262628'}} 
+                                            <Card.Image style={{width: 170, height: 160, tintColor: '#262628'}} 
                                             source={require("../assets/backImage.png")}>
-                                                <Card.Image style={{width: 180, height: 170, tintColor: 'white'}} 
+                                                <Card.Image style={{width: 170, height: 160, tintColor: 'white'}} 
                                                 source={{uri: item.glass}}>
-                                                    <Card.Image style={{width: 180, height: 170, tintColor: item.color}}
+                                                    <Card.Image style={{width: 170, height: 160, tintColor: item.color}}
                                                     // resizeMode="cover"
                                                     source={{uri: item.content}}>
                                                         {/* <Card.Image style={{width: 100, height: 100, tintColor: '#b22222'}} 
@@ -456,9 +460,11 @@ export default function Chat() {
                                                     </Card.Image>
                                                 </Card.Image>
                                             </Card.Image>
+                                        <View style={{backgroundColor:'#eeeeee'}}>
                                         <Card.Divider/>
-                                        <Card.Title style={{fontSize:16}}>{item.title}</Card.Title>
-                                        <Button
+                                        <Card.Title style={{backfontSize:16}}>{item.title}</Card.Title>
+                                        </View>
+                                        {/* <Button
                                             title="상세보기"
                                             buttonStyle={{ backgroundColor: 'rgba(39, 39, 39, 1)' }}
                                             titleStyle={{
@@ -470,8 +476,9 @@ export default function Chat() {
                                             {
                                                 name:item.title,
                                             })}
-                                        />
+                                        /> */}
                                     </Card>
+                                    </TouchableOpacity>
                                 ))}
                             </ScrollView>
                         )

@@ -12,6 +12,7 @@ import Signup from './screens/Signup';
 import Chat from './screens/Chat';
 import Home from './screens/Home';
 import Detail from './screens/Detail';
+import Search from './screens/Search';
 
 const Stack = createStackNavigator();
 const AuthenticatedUserContext = createContext({});
@@ -28,7 +29,30 @@ return (
 function ChatStack() {
   return (
     <Stack.Navigator defaultScreenOptions={Home}>
-      <Stack.Screen name='Home' component={Home} />
+      <Stack.Screen name='Home' 
+      component={Home} 
+      options={{
+        title: 'BROADY',
+        headerTitleStyle: {
+          fontSize: "20",
+        },
+        headerStyle: {
+          backgroundColor: '#161346'
+        },
+        headerTintColor: '#ffffff',
+      }}
+      />
+      <Stack.Screen name='Search'
+      options={{
+        title: '칵테일 검색',
+        headerTitleStyle: {
+          fontSize: "20",
+          fontWeight: "bold",
+        },
+        presentation:'transparentModal'
+      }}
+      component={Search}
+       />
       <Stack.Screen name='Chat' 
       options={{headerShown:false,}}
         component={Chat} 
@@ -37,7 +61,7 @@ function ChatStack() {
       // }}
       />
       <Stack.Screen name='Detail' 
-      options={{headerShown:false, presentation: 'modal'}} 
+      options={{headerShown:false}} 
       component={Detail}
        />
     </Stack.Navigator>
