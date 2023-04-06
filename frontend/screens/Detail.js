@@ -3,7 +3,10 @@ import { View, TouchableOpacity, Text, Image, StyleSheet, ImageBackground } from
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
-const url = "http://10.200.160.102:5001";
+import url from '../url';
+// const url = "http://10.200.160.102:5001";
+
+// import {url} from '../App.js';
 
 const Detail = ({ route, navigation }) => {
 
@@ -33,7 +36,7 @@ const Detail = ({ route, navigation }) => {
             },
         };
 
-        fetch(url + "/detail", name_info)
+        fetch(url.flask + "/detail", name_info)
             .then((response) => response.json())
             .then((response) => {
                 // console.log(response.cocktail[0].base);
@@ -60,12 +63,21 @@ const Detail = ({ route, navigation }) => {
         <View style={styles.container}>
 
             <View style={styles.row}>
+
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}>
-                        <AntDesign name="left" size={24} color={colors.black} style={styles.backButton} />
+                        <AntDesign name="left" size={24} color={colors.black} style={styles.backButton}/>
                 </TouchableOpacity>
-                <Text style={styles.titletext}>{name}</Text>
-                <View></View>
+
+                <View>
+                    <Text style={styles.titletext}>{name}</Text>
+                </View>
+                
+                <TouchableOpacity
+                    // onPress={() => navigation.goBack()}
+                    >
+                        <AntDesign name="heart" size={24} color={colors.black} style={{right:15}}/>
+                </TouchableOpacity>
             </View>
 
             <ImageBackground source={require('../assets/color.jpeg')} style={styles.background}>
@@ -110,6 +122,7 @@ const styles = StyleSheet.create({
     centercontainer:{
         justifyContent: 'center',
         alignItems: 'center',
+        textAlign: 'center',
     },
     detailtext: {
         flex: 1,
@@ -136,6 +149,7 @@ const styles = StyleSheet.create({
         // marginBottom: 5,
         fontSize: 22,
         fontWeight: 'bold',
+        // alignItems: 'center',
     },
     subtext:{
         marginTop:25, 
@@ -154,6 +168,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: 380,
+        marginBottom: 7,
     }
 });

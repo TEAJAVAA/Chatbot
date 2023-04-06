@@ -34,7 +34,7 @@ function ChatStack() {
       options={{
         title: 'BROADY',
         headerTitleStyle: {
-          fontSize: "20",
+          fontSize: 20,
         },
         headerStyle: {
           backgroundColor: '#161346'
@@ -46,7 +46,7 @@ function ChatStack() {
       options={{
         title: '칵테일 검색',
         headerTitleStyle: {
-          fontSize: "20",
+          fontSize: 20,
           fontWeight: "bold",
         },
         presentation:'transparentModal'

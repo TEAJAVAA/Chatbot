@@ -10,6 +10,8 @@ import { auth } from "../config/firebase";
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 import { Card, Button } from 'react-native-elements';
 
+// export const url = ["http://10.200.3.220:5001"];
+
 
 const Home = () => {
     const data = [
@@ -20,13 +22,13 @@ const Home = () => {
         },
         {
         title: 2,
-        glass: "https://github.com/unul09/imageupload/blob/main/glass1.png?raw=true",
-        content: "https://github.com/unul09/imageupload/blob/main/content1.png?raw=true",
+        glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
+        content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
         },
         {
         title: 3,
-        glass: "https://github.com/unul09/imageupload/blob/main/glass1.png?raw=true",
-        content: "https://github.com/unul09/imageupload/blob/main/content1.png?raw=true",
+        glass: "https://github.com/unul09/imageupload/blob/main/glass3.png?raw=true",
+        content: "https://github.com/unul09/imageupload/blob/main/content3.png?raw=true",
         },
         
       ];
@@ -86,7 +88,7 @@ const Home = () => {
                 {
                     name:"어스퀘이크(진)",
                 })} 
-                >
+                key={item.title} >
                 <Card 
                     containerStyle={{
                         padding:0, 

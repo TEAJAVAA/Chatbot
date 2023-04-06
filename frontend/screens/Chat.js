@@ -19,15 +19,20 @@ import { auth, database } from '../config/firebase';
 import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
+import url from '../url';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ImageBackground } from 'react-native';
+
+
+// import {url} from '../App.js';
+
 const backImage = require("../assets/backImage2.png");
 
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://github.com/unul09/imageupload/blob/main/dog.png?raw=true";
-const url = "http://10.200.160.102:5001";
+// const url = "http://10.200.160.102:5001";
 
 
 export default function Chat() {
@@ -211,7 +216,7 @@ export default function Chat() {
         };
         setIsTyping(true);
         
-        fetch(url + "/message", message_info)
+        fetch(url.flask + "/message", message_info)
             
             .then((response) => response.json())
             .then((response) => {
@@ -438,7 +443,8 @@ export default function Chat() {
                                     <TouchableOpacity onPress={() => navigation.navigate("Detail", 
                                     {
                                         name:item.title,
-                                    })}>
+                                    })}
+                                    key={item.title}>
                                     <Card 
                                         containerStyle={{
                                             padding:0, 
