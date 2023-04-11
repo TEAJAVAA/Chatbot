@@ -5,6 +5,14 @@ import pandas as pd
 import json
 import random
 
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+cred = credentials.Certificate("chatbot-7fc2e-firebase-adminsdk-tnee1-f1220bc0b8.json")
+firebase_admin.initialize_app(cred)
+firebase_db = firestore.client()
+
 cosineSim=CosineSimilarity()
 feelModel=FeelModel()
 transModel=TransModel()
@@ -14,6 +22,35 @@ tasteModel = TasteModel()
 BOT_replies = ['알겠습니다!', '알겠습니다.', '확인했어요!', '확인했습니다.', '잘 알겠습니다.', '좋은 선택이에요.', '멋진 선택이에요!', '추천에 참고할게요.', '안목이 탁월하시네요.', '저랑 통하셨네요.', '느낌이 좋네요.']
 
 app = Flask(__name__) 
+
+
+@app.route('/favorite', methods=['POST'])
+def favorite():
+    data = request.get_json(force=True)
+
+    #유저 이메일이나 유저 이메일_favorite 인수로 전달받아야 함
+    user = data['message']['user_favorite']
+    #user = 'test@naver.com_favorite'
+    users_ref = firebase_db.collection(user)
+    docs = users_ref.stream()
+
+    coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
+    # coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
+    coc_data = coc_data.loc[:,['name','glass','color']]
+
+    cocktails = []
+    for doc in docs:
+	    print(doc.id)
+	    cocktail=coc_data[coc_data['name']==doc.id]
+	    cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
+	    cocktail = json.loads(cocktail)[0]
+	    cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail['glass'])+'.png?raw=true'
+	    cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail['glass'])+'.png?raw=true'
+	    cocktail['title'] = cocktail.pop('name')
+	    cocktails.append(cocktail)
+
+    print(cocktails)
+    return jsonify(result="success", cocktails=cocktails)
 
 
 @app.route('/search',methods=['GET', 'POST'])
