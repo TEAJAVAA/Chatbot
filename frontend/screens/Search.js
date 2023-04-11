@@ -9,14 +9,15 @@ export default function Search({ navigation }) {
     const [selectedItem, setSelectedItem] = useState(null);
     // console.log(selectedItem)
 
-    function showDetail()
-    {
-        if(selectedItem != null)
-        {
-        navigation.navigate("Detail", {
-            name:selectedItem,
-        })
-    }
+    const showDetail = (props) => {
+        useEffect(() => {
+            if(selectedItem != null)
+            {
+                navigation.navigate("Detail", {
+                    name:selectedItem,
+                })
+            }
+        }, [selectedItem]);
     }
 
     useEffect(() => {

@@ -13,6 +13,7 @@ import Chat from './screens/Chat';
 import Home from './screens/Home';
 import Detail from './screens/Detail';
 import Search from './screens/Search';
+import Favorite from './screens/Favorite';
 
 const Stack = createStackNavigator();
 const AuthenticatedUserContext = createContext({});
@@ -28,7 +29,7 @@ return (
 
 function ChatStack() {
   return (
-    <Stack.Navigator defaultScreenOptions={Home}>
+    <Stack.Navigator defaultScreenOptions={Home} initialRouteName='HomeScreen'>
       <Stack.Screen name='Home' 
       component={Home} 
       options={{
@@ -64,13 +65,17 @@ function ChatStack() {
       options={{headerShown:false}} 
       component={Detail}
        />
+      <Stack.Screen name='Favorite' 
+      options={{headerShown:false}} 
+      component={Favorite}
+       />
     </Stack.Navigator>
   );
 }
 
 function AuthStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='AuthScreen'>
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='Signup' component={Signup} />
     </Stack.Navigator>

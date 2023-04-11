@@ -43,8 +43,8 @@ export default function Chat() {
     // const [state, setState] = useState("true");
     const navigation = useNavigation();
     const FEEL_MSG = "오늘 기분이 어떠신가요?";
-    const FREE1_MSG = "MBTI가 뭐에요?";
-    const FREE2_MSG = "여행 가보셨어요?";
+    const FREE1_MSG = "오늘 무엇을 하셨나요?";
+    const FREE2_MSG = "무슨 고민이라도 있으신가요?";
     const TASTE_MSG = "무슨 맛을 원하세요?";
     const RATE_MSG = "도수는 어느 정도로 원하시나요?";
     const INGRI_MSG = "어떤 재료를 선호하시나요?";
@@ -78,7 +78,7 @@ export default function Chat() {
             setMessages([
                 {
                     _id: Date.now(),
-                    image: testurl,
+                    // image: testurl,
                     text: FEEL_MSG,
                     createdAt: new Date(),
                     user: 'BOT_USER',
@@ -86,7 +86,7 @@ export default function Chat() {
             ]);
             addDoc(collection(database, auth?.currentUser?.email), {
                 _id: Date.now(),
-                image: testurl,
+                // image: testurl,
                 createdAt: new Date(),
                 text: FEEL_MSG,
                 user: 'BOT_USER',
@@ -453,11 +453,11 @@ export default function Chat() {
                                             overflow: 'hidden',
                                         }} 
                                         key={item.title}>
-                                            <Card.Image style={{width: 170, height: 160, tintColor: '#262628'}} 
+                                            <Card.Image style={{width: 160, height: 150, tintColor: '#262628'}} 
                                             source={require("../assets/backImage.png")}>
-                                                <Card.Image style={{width: 170, height: 160, tintColor: 'white'}} 
+                                                <Card.Image style={{width: 160, height: 150, tintColor: 'white'}} 
                                                 source={{uri: item.glass}}>
-                                                    <Card.Image style={{width: 170, height: 160, tintColor: item.color}}
+                                                    <Card.Image style={{width: 160, height: 150, tintColor: item.color}}
                                                     // resizeMode="cover"
                                                     source={{uri: item.content}}>
                                                         {/* <Card.Image style={{width: 100, height: 100, tintColor: '#b22222'}} 

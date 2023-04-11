@@ -4,14 +4,26 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
 import url from '../url';
-// const url = "http://10.200.160.102:5001";
-
-// import {url} from '../App.js';
+import {
+    collection,
+    doc,
+    addDoc,
+    updateDoc,
+    setDoc,
+    deleteDoc,
+    getDoc,
+    orderBy,
+    query,
+    onSnapshot
+} from 'firebase/firestore';
+import { auth, database } from '../config/firebase';
 
 const Detail = ({ route, navigation }) => {
 
     // const navigation = useNavigation();
     const {name} = route.params;
+
+    const [H, setH] = useState(0);
 
     const [info, setInfo] = useState({
         base: null,
@@ -24,8 +36,50 @@ const Detail = ({ route, navigation }) => {
         color: null,
     });
 
+    const addFavorite = (props) => {
+        getDoc(doc(database, auth?.currentUser?.email + "_favorite", name)).then(docSnap =>{
+            if(docSnap.exists())
+            {
+                setH(0);
+                deleteDoc(doc(database, auth?.currentUser?.email + "_favorite", name))
+            }
+            else
+            {
+                setH(1);
+                setDoc(doc(database, auth?.currentUser?.email + "_favorite", name), {name: name})
+            }
+        })
+    }
+
+    const ChangeHeart = (props) => {
+            if(H == 0)
+            {
+                return(
+                    <AntDesign name="hearto" size={24} color={colors.black} style={{right:15}}/>
+                );
+            }
+            else
+            {
+                return(
+                    <AntDesign name="heart" size={24} color={colors.black} style={{right:15}}/>
+                );
+            }
+
+    }
+
 
     useEffect(() => {
+        getDoc(doc(database, auth?.currentUser?.email + "_favorite", name)).then(docSnap =>{
+            if(docSnap.exists())
+            {
+                setH(1);
+            }
+            else
+            {
+                setH(0);
+            }
+        })
+
         const name_info = {
             method: "POST",
             body: JSON.stringify({
@@ -74,9 +128,10 @@ const Detail = ({ route, navigation }) => {
                 </View>
                 
                 <TouchableOpacity
-                    // onPress={() => navigation.goBack()}
+                    onPress={function () {addFavorite(); ChangeHeart();}}
                     >
-                        <AntDesign name="heart" size={24} color={colors.black} style={{right:15}}/>
+                        {/* <AntDesign name="hearto" size={24} color={colors.black} style={{right:15}}/> */}
+                        <ChangeHeart/>
                 </TouchableOpacity>
             </View>
 

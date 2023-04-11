@@ -16,19 +16,22 @@ import { Card, Button } from 'react-native-elements';
 const Home = () => {
     const data = [
         {
-        title: 1,
-        glass: "https://github.com/unul09/imageupload/blob/main/glass1.png?raw=true",
-        content: "https://github.com/unul09/imageupload/blob/main/content1.png?raw=true",
-        },
-        {
-        title: 2,
+        title: "하와이언",
         glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
         content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
+        color: "#cfa100",
         },
         {
-        title: 3,
-        glass: "https://github.com/unul09/imageupload/blob/main/glass3.png?raw=true",
-        content: "https://github.com/unul09/imageupload/blob/main/content3.png?raw=true",
+        title: "골든 텅",
+        glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
+        content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
+        color: "#cac8b4"
+        },
+        {
+        title: "마루루",
+        glass: "https://github.com/unul09/imageupload/blob/main/glass1.png?raw=true",
+        content: "https://github.com/unul09/imageupload/blob/main/content1.png?raw=true",
+        color: "#b38a25",
         },
         
       ];
@@ -44,7 +47,9 @@ const Home = () => {
         navigation.setOptions({
             headerLeft: () => (
                 <TouchableOpacity>
-                <FontAwesome name="heart" size={24} color={'#fff'} style={{marginLeft: 15}}/>
+                <FontAwesome name="heart" size={24} color={'#fff'} style={{marginLeft: 15}}
+                onPress={() => navigation.navigate("Favorite")}
+                />
                 </TouchableOpacity>
             ),
             headerRight: () => (
@@ -77,7 +82,7 @@ const Home = () => {
             </TouchableOpacity>
             </View>
 
-            <Text style={styles.welcometext2}>추천 칵테일</Text>
+            <Text style={styles.welcometext2}>손님을 위한 추천 칵테일</Text>
 
             <View style={{height: 200}}>
             <ScrollView showsHorizontalScrollIndicator={false} style={styles.scrollview}
@@ -86,7 +91,7 @@ const Home = () => {
                 {data.map((item) =>(
                 <TouchableOpacity onPress={() => navigation.navigate("Detail", 
                 {
-                    name:"어스퀘이크(진)",
+                    name:item.title,
                 })} 
                 key={item.title} >
                 <Card 
@@ -101,14 +106,14 @@ const Home = () => {
                         source={require("../assets/backImage.png")}>
                             <Card.Image style={{width: 140, height: 130, tintColor: 'white'}} 
                                 source={{uri: item.glass}}>
-                                    <Card.Image style={{width: 140, height: 130, tintColor: 'purple'}}
+                                    <Card.Image style={{width: 140, height: 130, tintColor: item.color}}
                                     source={{uri: item.content}}>
                                         
                                     </Card.Image>
                                 </Card.Image>
                     </Card.Image>
                     <Card.Divider/>
-                    <Card.Title style={{fontSize:16}}>어쩌구 칵테일</Card.Title>
+                    <Card.Title style={{fontSize:16}}>{item.title}</Card.Title>
                 </Card>
                 </TouchableOpacity>
             ))}
@@ -116,7 +121,7 @@ const Home = () => {
             </ScrollView>
             </View>
 
-            <Text style={styles.welcometext2}>추천 칵테일</Text>
+            {/* <Text style={styles.welcometext2}>추천 칵테일</Text> */}
 
         </View>
     );
