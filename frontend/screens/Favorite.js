@@ -5,23 +5,49 @@ import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 import { Card, Button } from 'react-native-elements';
+import { auth, database } from '../config/firebase';
+import url from '../url';
 
 export default function Favorite({ navigation }) {
-    const data = [
-        {
-            title: "하바나 비치",
-            glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
-            content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
-            color: "#dfdcd4",
-            },
-        {
-            title: "파인애플 피즈",
-            glass: "https://github.com/unul09/imageupload/blob/main/glass5.png?raw=true",
-            content: "https://github.com/unul09/imageupload/blob/main/content5.png?raw=true",
-            color: "#c59c19",
-            },
-    ]
+    // const data = [
+    //     {
+    //         title: "하바나 비치",
+    //         glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
+    //         content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
+    //         color: "#dfdcd4",
+    //         },
+    //     {
+    //         title: "파인애플 피즈",
+    //         glass: "https://github.com/unul09/imageupload/blob/main/glass5.png?raw=true",
+    //         content: "https://github.com/unul09/imageupload/blob/main/content5.png?raw=true",
+    //         color: "#c59c19",
+    //         },
+    // ]
+    const [data, setdata] = useState([]);
         
+    useEffect(() => {
+        const database_info = {
+            method: "POST",
+            body: JSON.stringify({
+                user_favorite: auth?.currentUser?.email + "_favorite"
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+
+        fetch(url.flask + '/favorite', database_info)
+            .then((response) => response.json())
+            .then((response) => {
+                // console.log(response.cocktail[0].base);
+                // console.log(response.cocktails);
+                setdata(response.cocktails);
+                // console.log(data);
+            });
+    },
+        []
+        // [info]
+    );
     
 
    
