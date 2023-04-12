@@ -82,7 +82,7 @@ const Home = () => {
             </TouchableOpacity>
             </View>
 
-            <Text style={styles.welcometext2}>손님을 위한 추천 칵테일</Text>
+            <Text style={styles.welcometext2}>손님만을 위한 추천 칵테일</Text>
 
             <View style={{height: 200}}>
             <ScrollView showsHorizontalScrollIndicator={false} style={styles.scrollview}
@@ -121,7 +121,7 @@ const Home = () => {
             </ScrollView>
             </View>
 
-            {/* <Text style={styles.welcometext2}>추천 칵테일</Text> */}
+            <Text style={styles.welcometext2}>칵테일에 관한 이야기들</Text>
 
         </View>
     );

@@ -7,6 +7,7 @@ import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 import { Card, Button } from 'react-native-elements';
 import { auth, database } from '../config/firebase';
 import url from '../url';
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function Favorite({ navigation }) {
     // const data = [
@@ -70,6 +71,7 @@ export default function Favorite({ navigation }) {
             </View>
         </View>
 
+        <ScrollView>
         <View style={styles.wrap}>
         {data.map((item) =>(
                 <TouchableOpacity onPress={() => navigation.navigate("Detail", 
@@ -101,6 +103,7 @@ export default function Favorite({ navigation }) {
                 </TouchableOpacity>
             ))}
         </View>
+        </ScrollView>
 
     </View>
     
