@@ -52,6 +52,56 @@ def favorite():
     print(cocktails)
     return jsonify(result="success", cocktails=cocktails)
 
+@app.route('/item', methods=['POST'])
+def item():
+    data = request.get_json(force=True)
+    user = data['user_favorite']
+    users_ref = firebase_db.collection(user)
+    docs = users_ref.stream()
+
+    coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
+    coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
+    cocktails = []
+
+    docs_num=len(list(docs))
+
+    if docs_num==0:
+        number=random.sample(range(0,len(coc_data)),3)
+        for i in number:
+            cocktail=coc_data.loc[i]
+            cocktail_glass=cocktail['glass']
+            cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail_glass)+'.png?raw=true'
+            cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail_glass)+'.png?raw=true'
+            cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
+            cocktail = json.loads(cocktail)
+            cocktails.append(cocktail)
+
+    else: 
+        docs = users_ref.stream()
+        number=random.randrange(0,docs_num)
+        count=0
+        for doc in docs:
+            if count==number:
+                target_cocktail=coc_data.loc[coc_data['name']==doc.id]
+                target_cocktail = target_cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
+                target_cocktail = json.loads(target_cocktail)[0]
+                degree=target_cocktail.pop('degree')
+                recipe=target_cocktail.pop('recipe')
+                info=target_cocktail.pop('info')
+                result=cosineSim.predictItem(doc.id,degree, recipe, info)
+                for i in range(3):
+                    cocktail=result[i]
+                    cocktail_glass=cocktail['glass']
+                    cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail_glass)+'.png?raw=true'
+                    cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail_glass)+'.png?raw=true'
+                    cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
+                    cocktail = json.loads(cocktail)
+                    cocktails.append(cocktail)
+            count+=1
+            
+    return jsonify(result="success", cocktail1=cocktails[0], cocktail2=cocktails[1],cocktail3=cocktails[2])
+
+
 
 @app.route('/search',methods=['GET', 'POST'])
 def search():

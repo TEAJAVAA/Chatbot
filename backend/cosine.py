@@ -169,6 +169,58 @@ class CosineSimilarity():
         idx3=self.result_cluster['point'].nlargest(3)
         '''
         
+    def predictItem(self, docId, degree, ingredient_input,info):
+        self.result_cluster=pd.concat([cluster1,cluster2,cluster3, cluster4,cluster5,cluster6,cluster7, cluster8,cluster9, cluster10])
+        self.result_cluster.drop(self.result_cluster[self.result_cluster['name']==docId].index, axis=0, inplace=True)
+        self.result_cluster['point'] = 0
+
+        if (degree==0):
+            degree_result='무알콜'
+        elif (degree>0 and degree <=10):
+            degree_result='0~10'
+        elif (degree>10 and degree <=20):
+            degree_result='10~20'
+        else:
+            degree_result='20~'
+            
+        self.calculate_degree(degree_result)
+        self.calculate_ingredient(ingredient_input)
+        okt = Okt()
+        explanation=list(self.result_cluster['info'])
+        for i in range(len(explanation)):
+            explanation[i] =str(explanation[i])
+        explanation.append(info)
+        for i in range(len(explanation)):
+            explanation[i] = okt.nouns(explanation[i])
+            explanation[i] = ', '.join(s for s in explanation[i])
+        doc_list = explanation
+        tfidf_vect_simple = TfidfVectorizer()
+        feature_vect_simple = tfidf_vect_simple.fit_transform(doc_list)
+        sim_list = []
+        feature_vect_dense = feature_vect_simple.todense()
+        for i in range(len(feature_vect_dense)):
+            vect1 = np.array(feature_vect_dense[len(feature_vect_dense)-1]).reshape(-1,)
+            vect2 = np.array(feature_vect_dense[i]).reshape(-1,)
+            similarity_simple = self.cos_similarity(vect1, vect2)
+            sim_list.append(similarity_simple)
+        sim_list.pop()
+        explanation.pop()
+        if math.isnan(sim_list[1]):
+            self.result_cluster['대화 유사도'] = 0
+        else :
+            self.result_cluster['대화 유사도'] = sim_list
+            self.result_cluster.loc[self.result_cluster['degree'] >=0, 'point'] +=self.result_cluster['대화 유사도']
+        
+        idx=self.result_cluster['point'].nlargest(3)
+        idx1 = idx.index[0]
+        idx2 = idx.index[1]
+        idx3 = idx.index[2]
+        cocktail1=self.data.loc[idx1]
+        cocktail2=self.data.loc[idx2] 
+        cocktail3=self.data.loc[idx3]
+        print(cocktail1, cocktail2, cocktail3)
+        return (cocktail1, cocktail2, cocktail3)
+        
 
 
 
