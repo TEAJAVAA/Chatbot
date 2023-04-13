@@ -10,20 +10,7 @@ import url from '../url';
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function Favorite({ navigation }) {
-    // const data = [
-    //     {
-    //         title: "하바나 비치",
-    //         glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
-    //         content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
-    //         color: "#dfdcd4",
-    //         },
-    //     {
-    //         title: "파인애플 피즈",
-    //         glass: "https://github.com/unul09/imageupload/blob/main/glass5.png?raw=true",
-    //         content: "https://github.com/unul09/imageupload/blob/main/content5.png?raw=true",
-    //         color: "#c59c19",
-    //         },
-    // ]
+   
     const [data, setdata] = useState([]);
         
     useEffect(() => {

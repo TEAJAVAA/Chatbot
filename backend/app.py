@@ -43,7 +43,7 @@ def favorite():
         print(doc.id)
         cocktail=coc_data[coc_data['name']==doc.id]
         cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
-        cocktail = json.loads(cocktail)
+        cocktail = json.loads(cocktail)[0]
         cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail['glass'])+'.png?raw=true'
         cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail['glass'])+'.png?raw=true'
         cocktail['title'] = cocktail.pop('name')

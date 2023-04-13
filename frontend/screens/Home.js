@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import { View, TouchableOpacity, Text, Image, StyleSheet, Keyboard, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { FontAwesome } from '@expo/vector-icons';
@@ -7,34 +7,38 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { signOut } from 'firebase/auth';
 import { auth } from "../config/firebase";
-import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
+import url from '../url';
 import { Card, Button } from 'react-native-elements';
 
 // export const url = ["http://10.200.3.220:5001"];
 
 
 const Home = () => {
-    const data = [
-        {
-        title: "하와이언",
-        glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
-        content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
-        color: "#cfa100",
-        },
-        {
-        title: "골든 텅",
-        glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
-        content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
-        color: "#cac8b4"
-        },
-        {
-        title: "마루루",
-        glass: "https://github.com/unul09/imageupload/blob/main/glass1.png?raw=true",
-        content: "https://github.com/unul09/imageupload/blob/main/content1.png?raw=true",
-        color: "#b38a25",
-        },
+
+    const [data, setdata] = useState([]);
+
+    // const data = [
+    //     {
+    //     title: "하와이언",
+    //     glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
+    //     content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
+    //     color: "#cfa100",
+    //     },
+    //     {
+    //     title: "골든 텅",
+    //     glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
+    //     content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
+    //     color: "#cac8b4"
+    //     },
+    //     {
+    //     title: "마루루",
+    //     glass: "https://github.com/unul09/imageupload/blob/main/glass1.png?raw=true",
+    //     content: "https://github.com/unul09/imageupload/blob/main/content1.png?raw=true",
+    //     color: "#b38a25",
+    //     },
         
-      ];
+    //   ];
 
     const navigation = useNavigation();
 
@@ -64,6 +68,30 @@ const Home = () => {
               )
             });
     }, [navigation]);
+
+    useEffect(() => {
+        const database_info = {
+            method: "POST",
+            body: JSON.stringify({
+                user_favorite: auth?.currentUser?.email + "_favorite"
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+
+        fetch(url.flask + '/item', database_info)
+            .then((response) => response.json())
+            .then((response) => {
+                // console.log(response.cocktail[0].base);
+                console.log(response.cocktails);
+                setdata(response.cocktails);
+                // console.log(data);
+            });
+    },
+        []
+        // [info]
+    );
 
     return (
         <View style={styles.container}>
