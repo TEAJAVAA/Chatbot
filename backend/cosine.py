@@ -218,7 +218,7 @@ class CosineSimilarity():
         cocktail1=self.data.loc[idx1]
         cocktail2=self.data.loc[idx2] 
         cocktail3=self.data.loc[idx3]
-        print(cocktail1, cocktail2, cocktail3)
+        #print(cocktail1, cocktail2, cocktail3)
         return (cocktail1, cocktail2, cocktail3)
         
 

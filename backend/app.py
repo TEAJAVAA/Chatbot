@@ -83,6 +83,7 @@ def item():
         for doc in docs:
             if count==number:
                 target_cocktail=coc_data.loc[coc_data['name']==doc.id]
+                print(target_cocktail)
                 target_cocktail = target_cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
                 target_cocktail = json.loads(target_cocktail)[0]
                 degree=target_cocktail.pop('degree')
