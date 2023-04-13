@@ -43,7 +43,7 @@ def favorite():
         print(doc.id)
         cocktail=coc_data[coc_data['name']==doc.id]
         cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
-        cocktail = json.loads(cocktail)[0]
+        cocktail = json.loads(cocktail)
         cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail['glass'])+'.png?raw=true'
         cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail['glass'])+'.png?raw=true'
         cocktail['title'] = cocktail.pop('name')
@@ -68,12 +68,12 @@ def item():
     if docs_num==0:
         number=random.sample(range(0,len(coc_data)),3)
         for i in number:
-            cocktail=coc_data.loc[i]
-            cocktail_glass=cocktail['glass']
-            cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail_glass)+'.png?raw=true'
-            cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail_glass)+'.png?raw=true'
+            cocktail=coc_data.loc[[i],:]
             cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
-            cocktail = json.loads(cocktail)
+            cocktail = json.loads(cocktail)[0]
+            cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail['glass'])+'.png?raw=true'
+            cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail['glass'])+'.png?raw=true'
+            cocktail['title'] = cocktail.pop('name')
             cocktails.append(cocktail)
 
     else: 
@@ -90,16 +90,17 @@ def item():
                 info=target_cocktail.pop('info')
                 result=cosineSim.predictItem(doc.id,degree, recipe, info)
                 for i in range(3):
-                    cocktail=result[i]
-                    cocktail_glass=cocktail['glass']
-                    cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail_glass)+'.png?raw=true'
-                    cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail_glass)+'.png?raw=true'
+                    cocktail_name=result[i]['name']
+                    cocktail=coc_data[coc_data['name']==cocktail_name]
                     cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
-                    cocktail = json.loads(cocktail)
+                    cocktail = json.loads(cocktail)[0]
+                    cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail['glass'])+'.png?raw=true'
+                    cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail['glass'])+'.png?raw=true'
+                    cocktail['title'] = cocktail.pop('name')
                     cocktails.append(cocktail)
             count+=1
             
-    return jsonify(result="success", cocktail1=cocktails[0], cocktail2=cocktails[1],cocktail3=cocktails[2])
+    return jsonify(result="success",  cocktails=cocktails)
 
 
 
