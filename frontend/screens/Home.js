@@ -18,33 +18,38 @@ const Home = () => {
 
     const [data, setdata] = useState([]);
 
-    // const data = [
-    //     {
-    //     title: "하와이언",
-    //     glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
-    //     content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
-    //     color: "#cfa100",
-    //     },
-    //     {
-    //     title: "골든 텅",
-    //     glass: "https://github.com/unul09/imageupload/blob/main/glass2.png?raw=true",
-    //     content: "https://github.com/unul09/imageupload/blob/main/content2.png?raw=true",
-    //     color: "#cac8b4"
-    //     },
-    //     {
-    //     title: "마루루",
-    //     glass: "https://github.com/unul09/imageupload/blob/main/glass1.png?raw=true",
-    //     content: "https://github.com/unul09/imageupload/blob/main/content1.png?raw=true",
-    //     color: "#b38a25",
-    //     },
-        
-    //   ];
-
     const navigation = useNavigation();
 
     const onSignOut = () => {
         signOut(auth).catch(error => console.log('Error logging out: ', error));
       };
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            const database_info = {
+                method: "POST",
+                body: JSON.stringify({
+                    user_favorite: auth?.currentUser?.email + "_favorite"
+                }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+    
+            fetch(url.flask + '/item', database_info)
+                .then((response) => response.json())
+                .then((response) => {
+                    // console.log(response.cocktail[0].base);
+                    console.log(response.cocktails);
+                    setdata(response.cocktails);
+                    // console.log(data);
+                });
+
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
 
       
     useEffect(() => {
@@ -69,33 +74,34 @@ const Home = () => {
             });
     }, [navigation]);
 
-    useEffect(() => {
-        const database_info = {
-            method: "POST",
-            body: JSON.stringify({
-                user_favorite: auth?.currentUser?.email + "_favorite"
-            }),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        };
+    // useEffect(() => {
+    //     const database_info = {
+    //         method: "POST",
+    //         body: JSON.stringify({
+    //             user_favorite: auth?.currentUser?.email + "_favorite"
+    //         }),
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //     };
 
-        fetch(url.flask + '/item', database_info)
-            .then((response) => response.json())
-            .then((response) => {
-                // console.log(response.cocktail[0].base);
-                console.log(response.cocktails);
-                setdata(response.cocktails);
-                // console.log(data);
-            });
-    },
-        []
-        // [info]
-    );
+    //     fetch(url.flask + '/item', database_info)
+    //         .then((response) => response.json())
+    //         .then((response) => {
+    //             // console.log(response.cocktail[0].base);
+    //             console.log(response.cocktails);
+    //             setdata(response.cocktails);
+    //             // console.log(data);
+    //         });
+    // },
+    //     []
+    //     // [info]
+    // );
 
     return (
         <View style={styles.container}>
-
+            <ScrollView
+            >
             <View style={styles.centercontainer}>
             <TouchableOpacity onPress={() => navigation.navigate("Search")} activeOpacity={1}>
                 <Image style={styles.searchbutton} source={require('../assets/searchbar.jpeg')}/>
@@ -150,7 +156,7 @@ const Home = () => {
             </View>
 
             <Text style={styles.welcometext2}>칵테일에 관한 이야기들</Text>
-
+        </ScrollView>
         </View>
     );
     };

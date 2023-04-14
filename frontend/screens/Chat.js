@@ -4,7 +4,7 @@ import React, {
     useLayoutEffect,
     useCallback
 } from 'react';
-import { SafeAreaView, StyleSheet, Image, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { SafeAreaView, StyleSheet, Image, View, TouchableOpacity, Text, ScrollView} from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import { ChatHeaderBar, GiftedChat, Bubble, Send, MessageImage } from 'react-native-gifted-chat';
 import {
