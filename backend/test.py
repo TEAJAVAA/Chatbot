@@ -12,3 +12,8 @@ firebase_db = firestore.client()
 
 #유저 이메일이나 유저 이메일_favorite 인수로 전달받아야 함
 #user = data['message']['text']
+from model import ChatGPT_api
+
+api=ChatGPT_api()
+
+api.reply("학교나 직장 생활은 어떠신가요?", "모르겠어 너무 어렵고 힘들어")

@@ -13,6 +13,31 @@ import csv
 from sklearn.model_selection import train_test_split
 from keras.models import load_model
 
+import openai
+openai.api_key="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"
+
+class ChatGPT_api():
+    def __init__(self):
+        self.initialize()
+
+    def initialize(self, ):
+        self.messages = []
+
+    def reply(self, chat_question, user_response):
+        prompt_additions = " / 답변은 한문장으로 긍정적이거나 유머러스하게 해줘"
+        self.messages.append({"role": "assistant", "content": chat_question})
+        self.messages.append({"role": "user", "content": user_response})
+        self.messages.append({"role": "system", "content": prompt_additions})
+        completion=openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=self.messages
+        )
+        chat_response=completion.choices[0].message.content
+        print(chat_response)
+        self.messages.append({"role": "assistant", "content":chat_response})
+        return chat_response
+
+
 class TransModel():
     def __init__(self):
         self.initialize()
