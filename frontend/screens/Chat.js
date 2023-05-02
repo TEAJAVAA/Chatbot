@@ -68,6 +68,7 @@ export default function Chat() {
     const f14 = "지금 딱 생각나는 색이 있으신가요? 무엇인가요?";
 
     const [starRating, setStarRating] = useState(null);
+    const [shouldShow, setShouldShow] = useState(null);
 
 
 
@@ -85,6 +86,7 @@ export default function Chat() {
                 </View>
             )
         }
+       
     }
 
     const randomQuestion = (props) =>{
@@ -99,6 +101,12 @@ export default function Chat() {
 
         setFM1(a)
         setFM2(b)
+    }
+
+    const starRateCollection = (score) => {
+        addDoc(collection(database, 'score'), {
+            score: score
+        });
     }
 
     // App code start
@@ -282,33 +290,18 @@ export default function Chat() {
                 {
                     // 토핑정보는 c1[8]에 ... 토핑 없을경우 null값으로 전달됨
                     title: c1[0],
-                    taste: c1[1],
-                    degree: c1[2],
-                    base: c1[4],
-                    recipe: c1[5],
-                    about: c1[6],
                     glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c1[7] + '.png?raw=true',
                     content: 'https://github.com/unul09/imageupload/blob/main/content' + c1[7] + '.png?raw=true',
                     color: c1[3]
                 },
                 {
                     title: c2[0],
-                    taste: c2[1],
-                    degree: c2[2],
-                    base: c2[4],
-                    recipe: c2[5],
-                    about: c2[6],
                     glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c2[7] + '.png?raw=true',
                     content: 'https://github.com/unul09/imageupload/blob/main/content' + c2[7] + '.png?raw=true',
                     color: c2[3]
                 },
                 {
                     title: c3[0],
-                    taste: c3[1],
-                    degree: c3[2],
-                    base: c3[4],
-                    recipe: c3[5],
-                    about: c3[6],
                     glass: 'https://github.com/unul09/imageupload/blob/main/glass' + c3[7] + '.png?raw=true',
                     content: 'https://github.com/unul09/imageupload/blob/main/content' + c3[7] + '.png?raw=true',
                     color: c3[3]
@@ -511,18 +504,55 @@ export default function Chat() {
                                     
                                 ))}
                             </ScrollView>
+                           
+                            {props.currentMessage._id.map((item) => (
                             <View style={styles.whitecontainer}>
                                 <Text style={styles.startext}> 추천은 어떠셨나요? 별점을 남겨주세요.</Text>
                                 <View style={styles.stars}>
-                                    <AntDesign name="staro" size={30} style={styles.starUnselected}/>
-                                    <AntDesign name="staro" size={30} style={styles.starUnselected}/>
-                                    <AntDesign name="staro" size={30} style={styles.starUnselected}/>
-                                    <AntDesign name="staro" size={30} style={styles.starUnselected}/>
-                                    <AntDesign name="staro" size={30} style={styles.starUnselected}/>
-                                    <AntDesign name="checkcircle" size={26} style={{paddingTop: 2, paddingLeft: 10}}/>
+                                    
+                                    <TouchableOpacity onPress={() => setStarRating(1)} activeOpacity={1}>
+                                        <AntDesign 
+                                        name={starRating >= 1 ? "star" : "staro"} 
+                                        size={30} 
+                                        style={starRating >= 1 ? styles.starSelected : styles.starUnselected}/>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity onPress={() => setStarRating(2)} activeOpacity={1}>
+                                        <AntDesign
+                                        name={starRating >= 2 ? "star" : "staro"} 
+                                        size={30} 
+                                        style={starRating >= 2 ? styles.starSelected : styles.starUnselected}/>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity onPress={() => setStarRating(3)} activeOpacity={1}>
+                                        <AntDesign 
+                                        name={starRating >= 3 ? "star" : "staro"} 
+                                        size={30} 
+                                        style={starRating >= 3 ? styles.starSelected : styles.starUnselected}/>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity onPress={() => setStarRating(4)} activeOpacity={1}>
+                                        <AntDesign
+                                        name={starRating >= 4 ? "star" : "staro"} 
+                                        size={30} 
+                                        style={starRating >= 4 ? styles.starSelected : styles.starUnselected}/>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity onPress={() => setStarRating(5)} activeOpacity={1}>
+                                        <AntDesign
+                                        name={starRating >= 5 ? "star" : "staro"} 
+                                        size={30} 
+                                        style={starRating >= 5 ? styles.starSelected : styles.starUnselected}/>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity onPress={() => {starRateCollection(starRating); setStarRating(null); disabled=true}}>
+                                        {item == Date.now() ? (
+                                        <AntDesign name="checkcircle" size={26} style={{paddingTop: 2, paddingLeft: 10}}/>
+                                        ) : null}
+                                    </TouchableOpacity>
                                 </View>
                             </View>
-                            
+                            ))}
                             </View>
                         )
                     }
@@ -592,9 +622,14 @@ const styles = StyleSheet.create({
         paddingRight: 8,
         color: '#aaa',
     },
+    starSelected: {
+        paddingLeft: 5,
+        paddingRight: 8,
+        color: '#ffae42',
+    },
     whitecontainer: {
         marginTop: 2,
-        padding: 10,
+        padding: 8,
         width: 310,
         backgroundColor: 'white',
         borderTopRightRadius: 20,
