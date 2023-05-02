@@ -40,7 +40,7 @@ const Home = () => {
                 .then((response) => response.json())
                 .then((response) => {
                     // console.log(response.cocktail[0].base);
-                    console.log(response.cocktails);
+                    // console.log(response.cocktails);
                     setdata(response.cocktails);
                     // console.log(data);
                 });
@@ -101,17 +101,19 @@ const Home = () => {
     return (
         <View style={styles.container}>
             <ScrollView
+            showsVerticalScrollIndicator={false}
             >
-            <View style={styles.centercontainer}>
+            <View style={styles.centercontainer}
+            >
             <TouchableOpacity onPress={() => navigation.navigate("Search")} activeOpacity={1}>
                 <Image style={styles.searchbutton} source={require('../assets/searchbar.jpeg')}/>
             </TouchableOpacity>
             </View>
 
-            <Text style={styles.welcometext}>칵테일 추천이 필요하신가요?</Text>
+            <Text style={styles.welcometext}>브로디의 칵테일 추천!</Text>
 
             <View style={styles.centercontainer}>
-            <TouchableOpacity onPress={() => navigation.navigate("Chat")}>
+            <TouchableOpacity onPress={() => navigation.navigate("Chat")} activeOpacity={1}>
                 <Image style={styles.chatbtn} source={require('../assets/chatbutton4.png')}/>
             </TouchableOpacity>
             </View>
@@ -127,7 +129,7 @@ const Home = () => {
                 {
                     name:item.title,
                 })} 
-                key={item.title} >
+                key={item.title}  activeOpacity={1}>
                 <Card 
                     containerStyle={{
                         padding:0, 
@@ -155,7 +157,14 @@ const Home = () => {
             </ScrollView>
             </View>
 
-            <Text style={styles.welcometext2}>칵테일에 관한 이야기들</Text>
+            <Text style={styles.welcometext2}>브로디와의 대화 타임</Text>
+            <View style={{height: 18}}></View>
+            <View style={styles.centercontainer}>
+            <TouchableOpacity onPress={() => navigation.navigate("FreeChat")} activeOpacity={1}>
+                <Image style={styles.chatbtn} source={require('../assets/freechatbutton.png')}/>
+            </TouchableOpacity>
+            </View>
+            <View style={{height: 36}}></View>
         </ScrollView>
         </View>
     );

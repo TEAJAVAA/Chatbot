@@ -23,6 +23,7 @@ import url from '../url';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ImageBackground } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 // import {url} from '../App.js';
@@ -43,13 +44,32 @@ export default function Chat() {
     // const [state, setState] = useState("true");
     const navigation = useNavigation();
     const FEEL_MSG = "오늘 기분이 어떠신가요?";
-    const FREE1_MSG = "오늘 무엇을 하셨나요?";
-    const FREE2_MSG = "무슨 고민이라도 있으신가요?";
+    const [FM1, setFM1] = useState("");
+    const [FM2, setFM2] = useState("");
     const TASTE_MSG = "무슨 맛을 원하세요?";
     const RATE_MSG = "도수는 어느 정도로 원하시나요?";
     const INGRI_MSG = "어떤 재료를 선호하시나요?";
     const EXTRA_MSG = "추가로 하고 싶은 말씀이 있나요?";
     const [isTyping, setIsTyping] = useState(false);
+
+    const f1 = "식사는 뭐로 하셨나요?";
+    const f2 = "오늘 하루 어떠셨나요?";
+    const f3 = "연애는 잘 되어가고 있으신가요?";
+    const f4 = "오늘 날씨는 어떤가요?";
+    const f5 = "오늘 무엇을 하셨나요?";
+    const f6 = "요즘 어떻게 지내시나요?";
+    const f7 = "무슨 고민이라도 있으신가요?";
+    const f8 = "학교나 직장 생활은 어떠신가요?";
+    const f9 = "요즘 하시는 취미활동이 있으신가요?";
+    const f10 = "술은 평소에 즐기시는 편인가요?";
+    const f11 = "어떤 음식을 좋아하시나요?";
+    const f12 = "당신의 성격은 어떤가요?";
+    const f13 = "좋아하는 거 아무거나 말씀해 주세요!";
+    const f14 = "지금 딱 생각나는 색이 있으신가요? 무엇인가요?";
+
+    const [starRating, setStarRating] = useState(null);
+
+
 
     // loading
     const renderFooter = (props) => {
@@ -67,11 +87,24 @@ export default function Chat() {
         }
     }
 
+    const randomQuestion = (props) =>{
+        let array = [f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14];
+        array.sort(() => Math.random() - 0.5);
+        // console.log(array);
+        
+        let a = array[0];
+        let b = array[1];
 
+        // console.log(a);
+
+        setFM1(a)
+        setFM2(b)
+    }
 
     // App code start
     useEffect(() => {
         if (N == 0) {
+            randomQuestion();
             info[0] = "feel";
             setN(N + 1);
             setIsTyping(false);
@@ -331,10 +364,10 @@ export default function Chat() {
         setTimeout(function () {
             // Something you want delayed.
             if (N == 1) {
-                sendBotQuestion(FREE1_MSG);
+                sendBotQuestion(FM1);
             }
             else if (N == 2) {
-                sendBotQuestion(FREE2_MSG);
+                sendBotQuestion(FM2);
             }
             else if (N == 3) {
                 sendBotQuestion(TASTE_MSG);
@@ -437,6 +470,7 @@ export default function Chat() {
                     // Show cocktails in card
                     if(props.currentMessage.isOptions){
                         return (
+                            <View>
                              <ScrollView showsHorizontalScrollIndicator={false} style={{backgroundColor: 'white'}}
                             horizontal={true}>
                                 {props.currentMessage.data.map((item) => (
@@ -451,6 +485,7 @@ export default function Chat() {
                                             borderRadius:15, 
                                             // paddingBottom: 7,
                                             overflow: 'hidden',
+                                            marginBottom: 15
                                         }} 
                                         key={item.title}>
                                             <Card.Image style={{width: 160, height: 150, tintColor: '#262628'}} 
@@ -470,23 +505,24 @@ export default function Chat() {
                                         <Card.Divider/>
                                         <Card.Title style={{backfontSize:16}}>{item.title}</Card.Title>
                                         </View>
-                                        {/* <Button
-                                            title="상세보기"
-                                            buttonStyle={{ backgroundColor: 'rgba(39, 39, 39, 1)' }}
-                                            titleStyle={{
-                                                color: "white",
-                                                fontSize: 14,
-                                            }}
-                                            style={{height: 35}}
-                                            onPress={() => navigation.navigate("Detail", 
-                                            {
-                                                name:item.title,
-                                            })}
-                                        /> */}
                                     </Card>
                                     </TouchableOpacity>
+                                    
                                 ))}
                             </ScrollView>
+                            <View style={styles.whitecontainer}>
+                                <Text style={styles.startext}> 추천은 어떠셨나요? 별점을 남겨주세요.</Text>
+                                <View style={styles.stars}>
+                                    <AntDesign name="staro" size={30} style={styles.starUnselected}/>
+                                    <AntDesign name="staro" size={30} style={styles.starUnselected}/>
+                                    <AntDesign name="staro" size={30} style={styles.starUnselected}/>
+                                    <AntDesign name="staro" size={30} style={styles.starUnselected}/>
+                                    <AntDesign name="staro" size={30} style={styles.starUnselected}/>
+                                    <AntDesign name="checkcircle" size={26} style={{paddingTop: 2, paddingLeft: 10}}/>
+                                </View>
+                            </View>
+                            
+                            </View>
                         )
                     }
 
@@ -513,6 +549,11 @@ export default function Chat() {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex:1,
+        padding: 10,
+        justifyContent: 'center'
+    },
     backImage: {
         width: "100%",
         height: 340,
@@ -535,6 +576,33 @@ const styles = StyleSheet.create({
         borderRadius: 150 / 2,
         overflow: "hidden",
         bottom:10
+    },
+    customRatingBarStyle: {
+        justifyContent: 'center',
+        flexDirection: 'row',
+        marginTop: 30
+    },
+    stars: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    starUnselected: {
+        paddingLeft: 5,
+        paddingRight: 8,
+        color: '#aaa',
+    },
+    whitecontainer: {
+        marginTop: 2,
+        padding: 10,
+        width: 310,
+        backgroundColor: 'white',
+        borderTopRightRadius: 20,
+        borderBottomRightRadius: 20,
+        borderBottomLeftRadius: 20,
+    },
+    startext:{
+        fontSize: 16,
+        marginBottom: 5,
     }
 });
 
