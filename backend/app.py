@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, request
-from model import TransModel, FeelModel, AlcholModel, TasteModel
+from model import FeelModel, AlcholModel, TasteModel
 from cosine import CosineSimilarity
 import pandas as pd
 import json
 import random
+from model import ChatGPT_api
 
 import firebase_admin
 from firebase_admin import credentials
@@ -15,7 +16,7 @@ firebase_db = firestore.client()
 
 cosineSim=CosineSimilarity()
 feelModel=FeelModel()
-transModel=TransModel()
+chatGPT_api=ChatGPT_api()
 alcholModel = AlcholModel()
 tasteModel = TasteModel()
 
@@ -23,6 +24,13 @@ BOT_replies = ['알겠습니다!', '알겠습니다.', '확인했어요!', '확�
 
 app = Flask(__name__) 
 
+@app.route('/getLatestText', methods=['POST'])
+def getLatestText(user):
+    users_ref = firebase_db.collection(user)
+    docs = users_ref.order_by("createdAt").limit_to_last(1).get()
+    text = docs[0].to_dict()['text']
+
+    return text
 
 @app.route('/favorite', methods=['POST'])
 def favorite():
@@ -103,8 +111,6 @@ def item():
             
     return jsonify(result="success",  cocktails=cocktails)
 
-
-
 @app.route('/search',methods=['GET', 'POST'])
 def search():
     coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
@@ -139,11 +145,6 @@ def detail():
     # print(cocktail)
     return jsonify(result="success", cocktail=cocktail)
 
-@app.route('/hello')
-def hello():
-    return {'result': "Hello World"}
-
-
 @app.route('/recommend_cocktail', methods=['POST'])
 def recommend_cocktail():
     reply = cosineSim.predict(feel_input,taste_input, degree_input,ingredient_input, free_talk1, free_talk2, etc_input)
@@ -159,38 +160,37 @@ def recommend_cocktail():
     print(cocktails[0])
 
     return jsonify(result="success", reply=reply, cocktail1=cocktails[0], cocktail2=cocktails[1],cocktail3=cocktails[2])
-    
-
-@app.route('/viewAll', methods=['POST'])
-def viewAll():
-   data = str(feel_input) + str('\n') + str(free_talk1) + str('\n') + str(free_talk2) + str('\n') + str(taste_input) + str('\n') + str(degree_input) + str('\n') + str(ingredient_input) + str('\n') + str(etc_input)
-   return jsonify(result="success", reply=data)
 
 @app.route('/message', methods=['POST'])
 def message():
     data = request.get_json(force=True)
+    print(data)
     message = data['message']['text']
+    user = data['user']
    
     info = data['information']
     if info == "feel":
         global feel_input
         feel_input = predict_feel()
         reply = []
-        reply = str(transModel.predict(message))
+        question = getLatestText(user)
+        reply = str(chatGPT_api.reply(question, message))
         return jsonify(result="success", reply=reply)
 
     elif info == "free1":
         global free_talk1
         free_talk1 = data['message']['text']
         reply = []
-        reply = str(transModel.predict(message))
+        question = getLatestText(user)
+        reply = str(chatGPT_api.reply(question, message))
         return jsonify(result="success", reply=reply)
 
     elif info == "free2":
         global free_talk2
         free_talk2 = data['message']['text']
         reply = []
-        reply = str(transModel.predict(message))
+        question = getLatestText(user)
+        reply = str(chatGPT_api.reply(question, message))
         return jsonify(result="success", reply=reply)
 
     elif info == "taste":

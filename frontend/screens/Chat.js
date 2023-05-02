@@ -242,6 +242,7 @@ export default function Chat() {
             body: JSON.stringify({
                 message: messages[0],
                 information: info[0],
+                user: auth?.currentUser?.email
             }),
             headers: {
                 "Content-Type": "application/json",

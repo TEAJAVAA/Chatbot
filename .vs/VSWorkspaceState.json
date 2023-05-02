@@ -1,9 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\backend",
-    "\\frontend\\screens"
+    "\\backend"
   ],
-  "SelectedNode": "\\backend\\chatbot-7fc2e-firebase-adminsdk-tnee1-f1220bc0b8.json",
+  "SelectedNode": "\\backend\\model.py",
   "PreviewInSolutionExplorer": false
 }
