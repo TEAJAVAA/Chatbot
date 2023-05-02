@@ -14,6 +14,7 @@ import Home from './screens/Home';
 import Detail from './screens/Detail';
 import Search from './screens/Search';
 import Favorite from './screens/Favorite';
+import FreeChat from './screens/FreeChat';
 
 const Stack = createStackNavigator();
 const AuthenticatedUserContext = createContext({});
@@ -68,6 +69,10 @@ function ChatStack() {
       <Stack.Screen name='Favorite' 
       options={{headerShown:false}} 
       component={Favorite}
+       />
+       <Stack.Screen name='FreeChat' 
+      options={{headerShown:false}} 
+      component={FreeChat}
        />
     </Stack.Navigator>
   );
