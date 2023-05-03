@@ -507,6 +507,7 @@ export default function Chat() {
                             </ScrollView>
                            
                             
+                            {shouldShow ? (
                             <View style={styles.whitecontainer}>
                                 <Text style={styles.startext}> 추천은 어떠셨나요? 별점을 남겨주세요.</Text>
                                 <View style={styles.stars}>
@@ -547,12 +548,13 @@ export default function Chat() {
                                     </TouchableOpacity>
 
                                     <TouchableOpacity onPress={() => {starRateCollection(starRating); setShouldShow(false)}}>
-                                        {shouldShow ? (
+                                        {/* {shouldShow ? ( */}
                                         <AntDesign name="checkcircle" size={26} style={{paddingTop: 2, paddingLeft: 10}}/>
-                                        ) : null}
+                                        {/* ) : null} */}
                                     </TouchableOpacity>
                                 </View>
                             </View>
+                            ) : null }
                             
                             </View>
                         )
