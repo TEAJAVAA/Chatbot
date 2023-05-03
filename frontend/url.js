@@ -1,3 +1,3 @@
 export default {
-    flask: "http://10.200.122.205:5001"
+    flask: "http://192.168.219.106:5001"
 };

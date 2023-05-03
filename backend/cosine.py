@@ -43,7 +43,10 @@ class CosineSimilarity():
     def cos_similarity(self,v1, v2):
             dot_product = np.dot(v1, v2)
             l2_norm = (np.sqrt(sum(np.square(v1))) * np.sqrt(sum(np.square(v2))))
-            similarity = dot_product/l2_norm     
+            if l2_norm==0:
+                similarity=0
+            else:
+                similarity = dot_product/l2_norm     
             return similarity
     
     def calculate_degree(self, degree):
@@ -89,16 +92,12 @@ class CosineSimilarity():
     def calculate_talk(self, free_talk1, free_talk2, etc_input):
         okt = Okt()
         explanation=list(self.result_cluster['info'])
-        for i in range(len(explanation)):
-            explanation[i] =str(explanation[i])
 
-        
         explanation.append(free_talk1+free_talk2+etc_input)
 
         for i in range(len(explanation)):
             explanation[i] = okt.nouns(explanation[i])
             explanation[i] = ', '.join(s for s in explanation[i])
-
         
         doc_list = explanation
 
@@ -147,7 +146,6 @@ class CosineSimilarity():
                 self.result_cluster = pd.concat([cluster4,cluster8])
                 
         self.result_cluster['point'] = 0
-
         self.calculate_degree(degree)
         self.calculate_ingredient(ingredient_input)
         self.calculate_talk(free_talk1, free_talk2, etc_input)
