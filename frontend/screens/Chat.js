@@ -233,6 +233,7 @@ export default function Chat() {
             info[0] = "ingredient";
         }
         else if (N == 7) {
+            setShouldShow(true);
             addDoc(collection(database, auth?.currentUser?.email), {
                 _id,
                 info: "extra",
@@ -505,7 +506,7 @@ export default function Chat() {
                                 ))}
                             </ScrollView>
                            
-                            {props.currentMessage._id.map((item) => (
+                            
                             <View style={styles.whitecontainer}>
                                 <Text style={styles.startext}> 추천은 어떠셨나요? 별점을 남겨주세요.</Text>
                                 <View style={styles.stars}>
@@ -545,14 +546,14 @@ export default function Chat() {
                                         style={starRating >= 5 ? styles.starSelected : styles.starUnselected}/>
                                     </TouchableOpacity>
 
-                                    <TouchableOpacity onPress={() => {starRateCollection(starRating); setStarRating(null); disabled=true}}>
-                                        {item == Date.now() ? (
+                                    <TouchableOpacity onPress={() => {starRateCollection(starRating); setShouldShow(false)}}>
+                                        {shouldShow ? (
                                         <AntDesign name="checkcircle" size={26} style={{paddingTop: 2, paddingLeft: 10}}/>
                                         ) : null}
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                            ))}
+                            
                             </View>
                         )
                     }
