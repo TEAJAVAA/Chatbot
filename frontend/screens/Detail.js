@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
         // marginBottom: 5,
         fontSize: 22,
         fontWeight: 'bold',
+        right: 5,
         // alignItems: 'center',
     },
     subtext:{
