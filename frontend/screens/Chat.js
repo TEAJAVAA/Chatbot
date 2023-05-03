@@ -86,6 +86,61 @@ export default function Chat() {
                 </View>
             )
         }
+
+        if (shouldShow)
+        {
+
+        // {shouldShow ? (
+            return (
+            <View style={styles.whitecontainer}>
+                <Text style={styles.startext}> 추천은 어떠셨나요? 별점을 남겨주세요.</Text>
+                <View style={styles.stars}>
+                    
+                    <TouchableOpacity onPress={() => setStarRating(1)} activeOpacity={1}>
+                        <AntDesign 
+                        name={starRating >= 1 ? "star" : "staro"} 
+                        size={30} 
+                        style={starRating >= 1 ? styles.starSelected : styles.starUnselected}/>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => setStarRating(2)} activeOpacity={1}>
+                        <AntDesign
+                        name={starRating >= 2 ? "star" : "staro"} 
+                        size={30} 
+                        style={starRating >= 2 ? styles.starSelected : styles.starUnselected}/>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => setStarRating(3)} activeOpacity={1}>
+                        <AntDesign 
+                        name={starRating >= 3 ? "star" : "staro"} 
+                        size={30} 
+                        style={starRating >= 3 ? styles.starSelected : styles.starUnselected}/>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => setStarRating(4)} activeOpacity={1}>
+                        <AntDesign
+                        name={starRating >= 4 ? "star" : "staro"} 
+                        size={30} 
+                        style={starRating >= 4 ? styles.starSelected : styles.starUnselected}/>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => setStarRating(5)} activeOpacity={1}>
+                        <AntDesign
+                        name={starRating >= 5 ? "star" : "staro"} 
+                        size={30} 
+                        style={starRating >= 5 ? styles.starSelected : styles.starUnselected}/>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => {starRateCollection(starRating); setShouldShow(false)}}>
+                        {/* {shouldShow ? ( */}
+                        <AntDesign name="checkcircle" size={26} style={{paddingTop: 2, paddingLeft: 10}}/>
+                        {/* ) : null} */}
+                    </TouchableOpacity>
+                </View>
+            </View>
+            // ) : null }
+            )
+        }
        
     }
 
@@ -233,7 +288,7 @@ export default function Chat() {
             info[0] = "ingredient";
         }
         else if (N == 7) {
-            setShouldShow(true);
+            // setShouldShow(true);
             addDoc(collection(database, auth?.currentUser?.email), {
                 _id,
                 info: "extra",
@@ -243,6 +298,7 @@ export default function Chat() {
             });
             setInfo("extra");
             info[0] = "extra";
+            setShouldShow(true);
         }
 
 
@@ -507,54 +563,7 @@ export default function Chat() {
                             </ScrollView>
                            
                             
-                            {shouldShow ? (
-                            <View style={styles.whitecontainer}>
-                                <Text style={styles.startext}> 추천은 어떠셨나요? 별점을 남겨주세요.</Text>
-                                <View style={styles.stars}>
-                                    
-                                    <TouchableOpacity onPress={() => setStarRating(1)} activeOpacity={1}>
-                                        <AntDesign 
-                                        name={starRating >= 1 ? "star" : "staro"} 
-                                        size={30} 
-                                        style={starRating >= 1 ? styles.starSelected : styles.starUnselected}/>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity onPress={() => setStarRating(2)} activeOpacity={1}>
-                                        <AntDesign
-                                        name={starRating >= 2 ? "star" : "staro"} 
-                                        size={30} 
-                                        style={starRating >= 2 ? styles.starSelected : styles.starUnselected}/>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity onPress={() => setStarRating(3)} activeOpacity={1}>
-                                        <AntDesign 
-                                        name={starRating >= 3 ? "star" : "staro"} 
-                                        size={30} 
-                                        style={starRating >= 3 ? styles.starSelected : styles.starUnselected}/>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity onPress={() => setStarRating(4)} activeOpacity={1}>
-                                        <AntDesign
-                                        name={starRating >= 4 ? "star" : "staro"} 
-                                        size={30} 
-                                        style={starRating >= 4 ? styles.starSelected : styles.starUnselected}/>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity onPress={() => setStarRating(5)} activeOpacity={1}>
-                                        <AntDesign
-                                        name={starRating >= 5 ? "star" : "staro"} 
-                                        size={30} 
-                                        style={starRating >= 5 ? styles.starSelected : styles.starUnselected}/>
-                                    </TouchableOpacity>
-
-                                    <TouchableOpacity onPress={() => {starRateCollection(starRating); setShouldShow(false)}}>
-                                        {/* {shouldShow ? ( */}
-                                        <AntDesign name="checkcircle" size={26} style={{paddingTop: 2, paddingLeft: 10}}/>
-                                        {/* ) : null} */}
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                            ) : null }
+                            
                             
                             </View>
                         )
@@ -631,7 +640,9 @@ const styles = StyleSheet.create({
         color: '#ffae42',
     },
     whitecontainer: {
-        marginTop: 2,
+        marginLeft: 16,
+        // marginTop: 2,
+        marginBottom: 8,
         padding: 8,
         width: 310,
         backgroundColor: 'white',
