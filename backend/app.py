@@ -24,12 +24,14 @@ BOT_replies = ['알겠습니다!', '알겠습니다.', '확인했어요!', '확�
 
 app = Flask(__name__) 
 
+coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
+coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
+
 @app.route('/getLatestText', methods=['POST'])
 def getLatestText(user):
     users_ref = firebase_db.collection(user)
     docs = users_ref.order_by("createdAt").limit_to_last(1).get()
     text = docs[0].to_dict()['text']
-
     return text
 
 @app.route('/favorite', methods=['POST'])
@@ -42,22 +44,18 @@ def favorite():
     users_ref = firebase_db.collection(user)
     docs = users_ref.stream()
 
-    coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
-    # coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
-    coc_data = coc_data.loc[:,['name','glass','color']]
+    coc_data_fav = coc_data.loc[:,['name','glass','color']]
 
     cocktails = []
     for doc in docs:
         print(doc.id)
-        cocktail=coc_data[coc_data['name']==doc.id]
+        cocktail=coc_data_fav[coc_data_fav['name']==doc.id]
         cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
         cocktail = json.loads(cocktail)[0]
         cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail['glass'])+'.png?raw=true'
         cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail['glass'])+'.png?raw=true'
         cocktail['title'] = cocktail.pop('name')
         cocktails.append(cocktail)
-
-    print(cocktails)
     return jsonify(result="success", cocktails=cocktails)
 
 @app.route('/item', methods=['POST'])
@@ -65,10 +63,7 @@ def item():
     data = request.get_json(force=True)
     user = data['user_favorite']
     users_ref = firebase_db.collection(user)
-    docs = users_ref.stream()
-
-    coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
-    coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
+    docs = users_ref.stream() 
     cocktails = []
 
     docs_num=len(list(docs))
@@ -113,8 +108,6 @@ def item():
 
 @app.route('/search',methods=['GET', 'POST'])
 def search():
-    coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
-    coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
     if request.method=='POST':
         data = request.get_json(force=True)
         message = data['message']['text']
@@ -130,35 +123,22 @@ def search():
 @app.route('/detail',methods=['POST'])
 def detail():
     data = request.get_json(force=True)
-    # print(data)
     message = data['name']
-    # print(message)
-    # print(len(message))
-    
-    coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
-    coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
     cocktail=coc_data[coc_data['name']==message]
-    # print(cocktail)
 
     cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
     cocktail = json.loads(cocktail)
-    # print(cocktail)
     return jsonify(result="success", cocktail=cocktail)
 
 @app.route('/recommend_cocktail', methods=['POST'])
 def recommend_cocktail():
-    reply = cosineSim.predict(feel_input,taste_input, degree_input,ingredient_input, free_talk1, free_talk2, etc_input)
+    reply = cosineSim.predict(feel_input,taste_input,degree_input,ingredient_input,free_talk1,free_talk2,etc_input)
     cocktails = []
-
     for i in range(3):
-        
         cocktail = reply[i].to_json(force_ascii=False, orient = 'records', indent=4)
         cocktail = json.loads(cocktail)
         cocktails.append(cocktail)
-
     reply = "당신을 위한 칵테일을 추천드립니다!"
-    print(cocktails[0])
-
     return jsonify(result="success", reply=reply, cocktail1=cocktails[0], cocktail2=cocktails[1],cocktail3=cocktails[2])
 
 @app.route('/message', methods=['POST'])
@@ -171,9 +151,9 @@ def message():
     info = data['information']
     if info == "feel":
         global feel_input
-        feel_input = predict_feel()
+        feel_input = predict_feel(message)
+        question = "오늘 기분이 어떠신가요?"
         reply = []
-        question = getLatestText(user)
         reply = str(chatGPT_api.reply(question, message))
         return jsonify(result="success", reply=reply)
 
@@ -187,7 +167,7 @@ def message():
 
     elif info == "free2":
         global free_talk2
-        free_talk2 = data['message']['text']
+        free_talk2 = message
         reply = []
         question = getLatestText(user)
         reply = str(chatGPT_api.reply(question, message))
@@ -195,13 +175,13 @@ def message():
 
     elif info == "taste":
         global taste_input
-        taste_input = predict_taste()
+        taste_input = predict_taste(message)
         reply = random.choice(BOT_replies)
         return jsonify(result="success", reply=reply)
 
     elif info == "rate":
         global degree_input
-        degree_input = predict_alchol()
+        degree_input = predict_alchol(message)
         reply = random.choice(BOT_replies)
         return jsonify(result="success", reply=reply)
 
@@ -213,38 +193,31 @@ def message():
 
     elif info == "extra":
         global etc_input
-        etc_input = data['message']['text']
+        etc_input = message
         return recommend_cocktail()
 
     else:
         return jsonify(result="error")
 
-    #추가
     
 
 # 도수 예측치 json으로 반환
 @app.route('/predict_alchol', methods=['POST'])
-def predict_alchol():
-    data = request.get_json(force=True)
-    message = data['message']['text']
+def predict_alchol(message):
     reply = []
     reply = alcholModel.predict(message)
     return reply
 
 # 감정 예측치 json으로 반환
 @app.route('/predict_feel', methods=['POST'])
-def predict_feel():
-    data = request.get_json(force=True)
-    message = data['message']['text']
+def predict_feel(message):
     reply = []
     reply = feelModel.predict(message)
     return reply
 
 # 맛 예측치 json으로 반환
 @app.route('/predict_taste', methods=['POST'])
-def predict_taste():
-    data = request.get_json(force=True)
-    message = data['message']['text']
+def predict_taste(message):
     reply = []
     reply = tasteModel.predict(message)
     return reply
