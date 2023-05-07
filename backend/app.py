@@ -37,18 +37,14 @@ def getLatestText(user):
 @app.route('/favorite', methods=['POST'])
 def favorite():
     data = request.get_json(force=True)
-
     #유저 이메일이나 유저 이메일_favorite 인수로 전달받아야 함
     user = data['user_favorite']
     #user = 'test@naver.com_favorite'
     users_ref = firebase_db.collection(user)
     docs = users_ref.stream()
-
     coc_data_fav = coc_data.loc[:,['name','glass','color']]
-
     cocktails = []
     for doc in docs:
-        print(doc.id)
         cocktail=coc_data_fav[coc_data_fav['name']==doc.id]
         cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
         cocktail = json.loads(cocktail)[0]
@@ -65,9 +61,8 @@ def item():
     users_ref = firebase_db.collection(user)
     docs = users_ref.stream() 
     cocktails = []
-
     docs_num=len(list(docs))
-
+    
     if docs_num==0:
         number=random.sample(range(0,len(coc_data)),3)
         for i in number:
@@ -86,7 +81,6 @@ def item():
         for doc in docs:
             if count==number:
                 target_cocktail=coc_data.loc[coc_data['name']==doc.id]
-                print(target_cocktail)
                 target_cocktail = target_cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
                 target_cocktail = json.loads(target_cocktail)[0]
                 degree=target_cocktail.pop('degree')
@@ -125,7 +119,6 @@ def detail():
     data = request.get_json(force=True)
     message = data['name']
     cocktail=coc_data[coc_data['name']==message]
-
     cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
     cocktail = json.loads(cocktail)
     return jsonify(result="success", cocktail=cocktail)
@@ -144,7 +137,6 @@ def recommend_cocktail():
 @app.route('/message', methods=['POST'])
 def message():
     data = request.get_json(force=True)
-    print(data)
     message = data['message']['text']
     user = data['user']
    

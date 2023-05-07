@@ -32,14 +32,8 @@ cluster10 = dummy.loc[dummy["name"].isin(Cluster10_list)]
 
 class CosineSimilarity():
     def __init__(self):
-        self.initialize()
-
-    def initialize(self, ):
-        self.data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
-        #resultdata가 군집화 결과물
-        self.data = self.data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
+        self.data=data
         
-
     def cos_similarity(self,v1, v2):
             dot_product = np.dot(v1, v2)
             l2_norm = (np.sqrt(sum(np.square(v1))) * np.sqrt(sum(np.square(v2))))
@@ -155,17 +149,10 @@ class CosineSimilarity():
         idx2 = idx.index[1]
         idx3 = idx.index[2]
 
-        cocktail1=self.data.loc[idx1]
-        cocktail2=self.data.loc[idx2] 
-        cocktail3=self.data.loc[idx3]
-        print(cocktail1, cocktail2, cocktail3)
+        cocktail1=data.loc[idx1]
+        cocktail2=data.loc[idx2] 
+        cocktail3=data.loc[idx3]
         return (cocktail1, cocktail2, cocktail3)
-        #cocktail.name, coctail[0]:당도, [1]:도수, [2]:색상, [3]:베이스, [4]:레시피, [5]:설명
-        '''
-        idx1=self.result_cluster['point'].nlargest(1)
-        idx2=self.result_cluster['point'].nlargest(2)
-        idx3=self.result_cluster['point'].nlargest(3)
-        '''
         
     def predictItem(self, docId, degree, ingredient_input,info):
         self.result_cluster=pd.concat([cluster1,cluster2,cluster3, cluster4,cluster5,cluster6,cluster7, cluster8,cluster9, cluster10])
@@ -213,10 +200,9 @@ class CosineSimilarity():
         idx1 = idx.index[0]
         idx2 = idx.index[1]
         idx3 = idx.index[2]
-        cocktail1=self.data.loc[idx1]
-        cocktail2=self.data.loc[idx2] 
-        cocktail3=self.data.loc[idx3]
-        #print(cocktail1, cocktail2, cocktail3)
+        cocktail1=data.loc[idx1]
+        cocktail2=data.loc[idx2] 
+        cocktail3=data.loc[idx3]
         return (cocktail1, cocktail2, cocktail3)
         
 

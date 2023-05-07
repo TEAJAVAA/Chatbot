@@ -29,7 +29,6 @@ class ChatGPT_api():
             messages=self.messages
         )
         chat_response=completion.choices[0].message.content
-        print(chat_response)
         self.messages.append({"role": "assistant", "content":chat_response})
         return chat_response
 
