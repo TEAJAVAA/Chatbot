@@ -2,7 +2,26 @@ from cosine import CosineSimilarity
 import pandas as pd
 import json
 
-cosineSim=CosineSimilarity()
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+from model import ChatGPT_api
+
+cred = credentials.Certificate("chatbot-7fc2e-firebase-adminsdk-tnee1-f1220bc0b8.json")
+firebase_admin.initialize_app(cred)
+firebase_db = firestore.client()
+chatGPT_api=ChatGPT_api()
+users_ref = firebase_db.collection("test@naver.com_freechat")
+docs = users_ref.order_by("createdAt").limit_to_last(4).get()
+text1 = docs[0].to_dict()['text']
+text2 = docs[1].to_dict()['text']
+text3 = docs[2].to_dict()['text']
+
+reply = []
+reply = str(chatGPT_api.reply_free(text1, text2, text3))
+print(reply)
+
+'''cosineSim=CosineSimilarity()
 reply = cosineSim.predict("슬픔", "단맛","20~30", "딸기", "딸기", "딸기", "딸기")
 
 
@@ -12,7 +31,7 @@ for i in range(3):
     cocktail_name = reply[i].name
 
     cocktails.append(cocktail_name)
-    print(cocktails)
+    print(cocktails)'''
 
 '''resultData = pd.read_csv("dataset/cocResult2.csv", index_col=0)
 data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
