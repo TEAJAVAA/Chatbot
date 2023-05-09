@@ -3,7 +3,8 @@ import { StyleSheet, TouchableOpacity, FlatList, Text, View } from "react-native
 import * as Animatable from "react-native-animatable";
 import { AntDesign } from '@expo/vector-icons';
 import colors from '../colors';
-import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
+import {Dimensions} from 'react-native';
 
 export default function Search({ navigation }) {
     const [selectedItem, setSelectedItem] = useState(null);
@@ -39,6 +40,9 @@ export default function Search({ navigation }) {
         clearOnFocus={true}
         closeOnBlur={true}
         closeOnSubmit={false}
+        containerStyle={{
+            width: Dimensions.get('window').width*0.96
+        }}
         // initialValue={{id: '0'}} // or just '2'
         onSelectItem={item => {
             item && setSelectedItem(item.title)
@@ -46,7 +50,7 @@ export default function Search({ navigation }) {
         onSubmit={showDetail()}
         inputContainerStyle={{
             borderRadius: 10,
-            width: 380,
+            width: Dimensions.get('window').width*0.96
         }}
         textInputProps={{
             placeholder: '칵테일을 입력해보세요',

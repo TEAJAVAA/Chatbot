@@ -10,6 +10,7 @@ import { auth } from "../config/firebase";
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 import url from '../url';
 import { Card, Button } from 'react-native-elements';
+import {Dimensions} from 'react-native';
 
 // export const url = ["http://10.200.3.220:5001"];
 
@@ -206,7 +207,7 @@ const Home = () => {
         },
         searchbutton: {
             marginTop: 16,
-            width: 415,
+            width: Dimensions.get('window').width*0.96,
             height: 42,
         },
         welcometext: {
@@ -225,7 +226,7 @@ const Home = () => {
         },
         chatbtn: {
             borderRadius: 15,
-            width: 380,
+            width: Dimensions.get('window').width*0.93,
             height: 150,
         },
         scrollview: {

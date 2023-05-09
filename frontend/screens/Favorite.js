@@ -9,6 +9,7 @@ import { auth, database } from '../config/firebase';
 import url from '../url';
 import { ScrollView } from "react-native-gesture-handler";
 import { ScreenWidth } from "react-native-elements/dist/helpers";
+import {Dimensions} from 'react-native';
 
 export default function Favorite({ navigation }) {
    
@@ -76,11 +77,11 @@ export default function Favorite({ navigation }) {
                         overflow: 'hidden',
                     }} 
                     key={item.title}>
-                     <Card.Image style={{width: ScreenWidth * 0.38, height: 150, tintColor: '#262628'}} 
+                     <Card.Image style={{width: Dimensions.get('window').width*0.36, height: 150, tintColor: '#262628'}} 
                         source={require("../assets/backImage.png")}>
-                            <Card.Image style={{width: ScreenWidth * 0.38, height: 150, tintColor: 'white'}} 
+                            <Card.Image style={{ width: Dimensions.get('window').width*0.36, height: 150, tintColor: 'white'}} 
                                 source={{uri: item.glass}}>
-                                    <Card.Image style={{width: ScreenWidth * 0.38, height: 150, tintColor: item.color}}
+                                    <Card.Image style={{width:  Dimensions.get('window').width*0.36, height: 150, tintColor: item.color}}
                                     source={{uri: item.content}}>
                                         
                                     </Card.Image>
@@ -155,7 +156,8 @@ const styles = StyleSheet.create({
         marginBottom: 7,
     },
     wrap: {
-        left: 3,
+        left: Dimensions.get('window').width*0.025,
+        right: Dimensions.get('window').width*0.025,
         flexDirection: 'row',
         flexWrap: 'wrap',
         margin: 15,
