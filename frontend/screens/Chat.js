@@ -26,14 +26,11 @@ import { ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 
-// import {url} from '../App.js';
-
 const backImage = require("../assets/backImage2.png");
 
 //For testing
 const cocktailImage = require("../assets/redcocktailimage.png");
 const testurl = "https://github.com/unul09/imageupload/blob/main/dog.png?raw=true";
-// const url = "http://10.200.160.102:5001";
 
 
 export default function Chat() {
@@ -457,13 +454,22 @@ export default function Chat() {
 
     // Send Button Style
     const renderSend = (props) => {
-        return (
-            <Send {...props}>
-                <View>
-                    <MaterialCommunityIcons name='send-circle' style={{ marginBottom: 5, marginRight: 5 }} size={36} />
-                </View>
-            </Send>
-        );
+        if(!shouldShow)
+        {
+            return (
+                <Send {...props}>
+                    <View>
+                        <MaterialCommunityIcons name='send-circle' style={{ marginBottom: 5, marginRight: 5 }} size={36} />
+                    </View>
+                </Send>
+            );
+        }
+        else
+        {
+            return (
+                <View></View>
+            )
+        }
     }
 
     // Message Image Button Style
@@ -529,7 +535,7 @@ export default function Chat() {
                                     {
                                         name:item.title,
                                     })}
-                                    key={item.title}>
+                                    key={item.title}  activeOpacity={0.7}>
                                     <Card 
                                         containerStyle={{
                                             padding:0, 
@@ -641,10 +647,9 @@ const styles = StyleSheet.create({
     },
     whitecontainer: {
         marginLeft: 16,
-        // marginTop: 2,
         marginBottom: 8,
-        padding: 8,
-        width: 310,
+        padding: 5,
+        width: 300,
         backgroundColor: 'white',
         borderTopRightRadius: 20,
         borderBottomRightRadius: 20,

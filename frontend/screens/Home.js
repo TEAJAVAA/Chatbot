@@ -129,7 +129,7 @@ const Home = () => {
                 {
                     name:item.title,
                 })} 
-                key={item.title}  activeOpacity={1}>
+                key={item.title}  activeOpacity={0.7}>
                 <Card 
                     containerStyle={{
                         padding:0, 

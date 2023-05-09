@@ -15,6 +15,7 @@ export default function Favorite({ navigation }) {
     const [data, setdata] = useState([]);
         
     useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
         const database_info = {
             method: "POST",
             body: JSON.stringify({
@@ -33,11 +34,11 @@ export default function Favorite({ navigation }) {
                 setdata(response.cocktails);
                 // console.log(data);
             });
-    },
-        []
-        // [info]
-    );
-    
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
 
    
 
