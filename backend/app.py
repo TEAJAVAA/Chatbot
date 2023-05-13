@@ -25,7 +25,10 @@ BOT_replies = ['알겠습니다!', '알겠습니다.', '확인했어요!', '확�
 app = Flask(__name__) 
 
 coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
-coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
+coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring', 'topping'], axis=1)
+coc_data['content'] = coc_data['glass'].apply(lambda x: 'https://github.com/unul09/imageupload/blob/main/content'+str(x)+'.png?raw=true')
+coc_data['glass'] = coc_data['glass'].apply(lambda x: 'https://github.com/unul09/imageupload/blob/main/glass'+str(x)+'.png?raw=true')
+       
 
 @app.route('/getLatestText', methods=['POST'])
 def getLatestText(user):
@@ -48,8 +51,6 @@ def favorite():
         cocktail=coc_data_fav[coc_data_fav['name']==doc.id]
         cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
         cocktail = json.loads(cocktail)[0]
-        cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail['glass'])+'.png?raw=true'
-        cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail['glass'])+'.png?raw=true'
         cocktail['title'] = cocktail.pop('name')
         cocktails.append(cocktail)
     return jsonify(result="success", cocktails=cocktails)
@@ -69,8 +70,6 @@ def item():
             cocktail=coc_data.loc[[i],:]
             cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
             cocktail = json.loads(cocktail)[0]
-            cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail['glass'])+'.png?raw=true'
-            cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail['glass'])+'.png?raw=true'
             cocktail['title'] = cocktail.pop('name')
             cocktails.append(cocktail)
 
@@ -83,17 +82,12 @@ def item():
                 target_cocktail=coc_data.loc[coc_data['name']==doc.id]
                 target_cocktail = target_cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
                 target_cocktail = json.loads(target_cocktail)[0]
-                degree=target_cocktail.pop('degree')
-                recipe=target_cocktail.pop('recipe')
-                info=target_cocktail.pop('info')
-                result=cosineSim.predictItem(doc.id,degree, recipe, info)
+                result=cosineSim.predictItem(doc.id)
                 for i in range(3):
                     cocktail_name=result[i]['name']
                     cocktail=coc_data[coc_data['name']==cocktail_name]
                     cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
                     cocktail = json.loads(cocktail)[0]
-                    cocktail['content'] = 'https://github.com/unul09/imageupload/blob/main/content'+str(cocktail['glass'])+'.png?raw=true'
-                    cocktail['glass'] = 'https://github.com/unul09/imageupload/blob/main/glass'+str(cocktail['glass'])+'.png?raw=true'
                     cocktail['title'] = cocktail.pop('name')
                     cocktails.append(cocktail)
             count+=1
@@ -104,14 +98,14 @@ def item():
 def search():
     if request.method=='POST':
         data = request.get_json(force=True)
-        message = data['message']['text']
+        message = data['key']
         coc_result = coc_data[coc_data['name'].str.contains(message) | coc_data['recipe'].str.contains(message)]
-        print(coc_result)
-        coc_result = coc_result.to_dict()
+        coc_result = coc_result.to_json(force_ascii=False, orient = 'records', indent=4)
+        coc_result = json.loads(coc_result)
         return jsonify(result="success", cocktail=coc_result)
     else:
-        coc_result_all = coc_data.to_dict()
-        print("칵테일 정보 모두 전송 ...")
+        coc_result_all = coc_data.to_json(force_ascii=False, orient = 'records', indent=4)
+        coc_result_all = json.loads(coc_result_all)
         return jsonify(result="success", cocktail=coc_result_all)
 
 @app.route('/detail',methods=['POST'])

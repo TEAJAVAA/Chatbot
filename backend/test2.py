@@ -1,6 +1,7 @@
 from cosine import CosineSimilarity
 import pandas as pd
 import json
+'''
 
 import firebase_admin
 from firebase_admin import credentials
@@ -20,6 +21,7 @@ text3 = docs[2].to_dict()['text']
 reply = []
 reply = str(chatGPT_api.reply_free(text1, text2, text3))
 print(reply)
+'''
 
 '''cosineSim=CosineSimilarity()
 reply = cosineSim.predict("슬픔", "단맛","20~30", "딸기", "딸기", "딸기", "딸기")
@@ -105,14 +107,15 @@ cocktail=coc_data.loc[[0],:]
 cocktail = cocktail.to_json(force_ascii=False, orient = 'records', indent=4)
 print(cocktail)
 
-
+'''
 from cosine import CosineSimilarity
 cosineSim=CosineSimilarity()
-result=cosineSim.predictItem('어스퀘이크(진)',37, "드라이 진, 위스키, 페르노", "강한 향과 배합으로 알코올 도수에 주의.")
-print('afdsffadf')
+result=cosineSim.predictItem('어스퀘이크(진)')
 print(result[0]['name'])
+reply = cosineSim.predict("슬픔", "단맛","20~30", "딸기", "딸기", "딸기", "딸기")
+print(reply)
 
- 
+'''
 number=random.sample(range(0,len(coc_data)),3)
 for i in number:
     cocktail=coc_data.loc[i]
