@@ -45,7 +45,7 @@ def favorite():
     #user = 'test@naver.com_favorite'
     users_ref = firebase_db.collection(user)
     docs = users_ref.stream()
-    coc_data_fav = coc_data.loc[:,['name','glass','color']]
+    coc_data_fav = coc_data.loc[:,['name','glass','color','content']]
     cocktails = []
     for doc in docs:
         cocktail=coc_data_fav[coc_data_fav['name']==doc.id]
