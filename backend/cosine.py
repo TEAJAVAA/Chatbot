@@ -130,7 +130,7 @@ class CosineSimilarity():
         origin_item=self.result_cluster[self.result_cluster['name']==docId]
         self.result_cluster.drop(self.result_cluster[self.result_cluster['name']==docId].index, axis=0, inplace=True)
         self.result_cluster['point'] = 0
-        degree=origin_item.at[0,'degree']
+        degree=origin_item.iloc[0]['degree']
         if (degree==0):
             degree_result='무알콜'
         elif (degree>0 and degree <=10):
@@ -140,11 +140,11 @@ class CosineSimilarity():
         else:
             degree_result='20~'
         
-        self.calculate_degree(degree)
-        self.calculate_ingredient(origin_item.at[0,'recipe'])
+        self.calculate_degree(degree_result)
+        self.calculate_ingredient(origin_item.iloc[0]['recipe'])
         
         explanation_temp=list(self.result_cluster['info_revised'])
-        explanation_temp.append(origin_item.at[0,'info_revised'])
+        explanation_temp.append(origin_item.iloc[0]['info_revised'])
         sim_list= self.cosine_calcultate(explanation_temp)
         self.result_cluster['대화 유사도'] = sim_list
         self.result_cluster.loc[self.result_cluster['degree'] >=0, 'point'] +=self.result_cluster['대화 유사도']
