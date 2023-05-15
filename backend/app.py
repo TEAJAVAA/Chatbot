@@ -31,9 +31,16 @@ coc_data['glass'] = coc_data['glass'].apply(lambda x: 'https://github.com/unul09
        
 
 class currentUser():
+    
     def __init__(self, name):
-        print("new user created!")
         self.name = name
+        self.feel_input = ''
+        self.free_talk1 = ''
+        self.free_talk2 = ''
+        self.taste_input = ''
+        self.degree_input = ''
+        self.ingredient_input = ''
+        self.etc_input = ''
         self.chatGPT_api = model.ChatGPT_api()
     def chat_pred(self, question, message):
         return self.chatGPT_api.reply(question, message)
@@ -128,8 +135,8 @@ def detail():
     return jsonify(result="success", cocktail=cocktail)
 
 @app.route('/recommend_cocktail', methods=['POST'])
-def recommend_cocktail():
-    reply = cosineSim.predict(feel_input,taste_input,degree_input,ingredient_input,free_talk1,free_talk2,etc_input)
+def recommend_cocktail(user):
+    reply = cosineSim.predict(users[user].feel_input, users[user].taste_input, users[user].degree_input, users[user].ingredient_input, users[user].free_talk1, users[user].free_talk2, users[user].etc_input)
     cocktails = []
     for i in range(3):
         cocktail = reply[i].to_json(force_ascii=False, orient = 'records', indent=4)
@@ -141,7 +148,7 @@ def recommend_cocktail():
 @app.route('/message', methods=['POST'])
 def message():
     data = request.get_json(force=True)
-    print(data)
+    
     message = data['message']['text']
     user = data['user']
 
@@ -150,51 +157,44 @@ def message():
    
     info = data['information']
     if info == "feel":
-        global feel_input
-        feel_input = predict_feel(message)
+        users[user].feel_input = predict_feel(message)
         question = "오늘 기분이 어떠신가요?"
         reply = []
         reply = users[user].chat_pred(question, message)
         return jsonify(result="success", reply=reply)
 
     elif info == "free1":
-        global free_talk1
-        free_talk1 = data['message']['text']
+        users[user].free_talk1 = data['message']['text']
         reply = []
         question = getLatestText(user)
         reply = users[user].chat_pred(question, message)
         return jsonify(result="success", reply=reply)
 
     elif info == "free2":
-        global free_talk2
-        free_talk2 = message
+        users[user].free_talk2 = message
         reply = []
         question = getLatestText(user)
         reply = users[user].chat_pred(question, message)
         return jsonify(result="success", reply=reply)
 
     elif info == "taste":
-        global taste_input
-        taste_input = predict_taste(message)
+        users[user].taste_input = predict_taste(message)
         reply = random.choice(BOT_replies)
         return jsonify(result="success", reply=reply)
 
     elif info == "rate":
-        global degree_input
-        degree_input = predict_alchol(message)
+        users[user].degree_input = predict_alchol(message)
         reply = random.choice(BOT_replies)
         return jsonify(result="success", reply=reply)
 
     elif info == "ingredient":
-        global ingredient_input
-        ingredient_input = data['message']['text']
+        users[user].ingredient_input = data['message']['text']
         reply = random.choice(BOT_replies)
         return jsonify(result="success", reply=reply)
 
     elif info == "extra":
-        global etc_input
-        etc_input = message
-        return recommend_cocktail()
+        users[user].etc_input = message
+        return recommend_cocktail(user)
 
     else:
         return jsonify(result="error")
