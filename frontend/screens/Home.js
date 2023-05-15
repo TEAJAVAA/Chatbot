@@ -208,7 +208,7 @@ const Home = () => {
         searchbutton: {
             marginTop: 6,
             width: Dimensions.get('window').width*0.96,
-            height: 60,
+            height: Dimensions.get('window').width*0.145,
         },
         welcometext: {
             margin: 20,

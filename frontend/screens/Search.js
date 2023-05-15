@@ -28,7 +28,7 @@ export default function Search({ navigation }) {
 
 
     const searchData = (text) => {
-        console.log(text);
+        // console.log(text);
         const search_info = {
             method: "POST",
             body: JSON.stringify({
@@ -67,12 +67,12 @@ export default function Search({ navigation }) {
                     <ImageBackground source={{uri:item.glass || null}} 
                     >
                         <Image source={{uri:item.content || null}} 
-                        style={{tintColor: item.color, width: 100, height: 80,}}
+                        style={{tintColor: item.color, width: 100, height: 80}}
                         >
                         </Image>
                     </ImageBackground>
                 <View style={{flex:1, alignItems:'flex-start'}}>
-                    <Text style={{ fontWeight:'bold', fontSize: 16 }}>{item.name} </Text>
+                    <Text style={{ fontWeight:'bold', fontSize: 16, paddingBottom: 3 }}>{item.name} </Text>
                     <Text>{item.recipe} </Text>
                 </View>
             </View>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     listcontainer: {
         flexDirection:'row', 
         alignItems: "center",
-        backgroundColor: '#cfd3db',
+        backgroundColor: '#e5e9f1',
         margin: 5,
         padding: 5,
         borderRadius: 10,
