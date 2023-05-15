@@ -107,7 +107,7 @@ const Home = () => {
             <View style={styles.centercontainer}
             >
             <TouchableOpacity onPress={() => navigation.navigate("Search")} activeOpacity={1}>
-                <Image style={styles.searchbutton} source={require('../assets/searchbar.jpeg')}/>
+                <Image style={styles.searchbutton} source={require('../assets/searchbar.png')}/>
             </TouchableOpacity>
             </View>
 
@@ -206,9 +206,9 @@ const Home = () => {
             margin: 20,
         },
         searchbutton: {
-            marginTop: 16,
+            marginTop: 6,
             width: Dimensions.get('window').width*0.96,
-            height: 42,
+            height: 60,
         },
         welcometext: {
             margin: 20,

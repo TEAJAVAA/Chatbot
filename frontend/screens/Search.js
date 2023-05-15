@@ -57,34 +57,39 @@ export default function Search({ navigation }) {
 
     const renderCocktail = ({ item }) => (
         <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            margin: 15,
-          }}
+        style={{alignItems:'center'}}
         >
           <TouchableOpacity  onPress={() => navigation.navigate("Detail", {
                     name:item.name,
                 })}>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
+         
+            <View style={styles.listcontainer}>
                     <ImageBackground source={{uri:item.glass || null}} 
                     >
                         <Image source={{uri:item.content || null}} 
-                        style={{tintColor: item.color, width: 200, height: 190,}}
+                        style={{tintColor: item.color, width: 100, height: 80,}}
                         >
                         </Image>
                     </ImageBackground>
-                <Text style={{ textAlign: "center" }}>{item.name} </Text>
-                <Text style={{ textAlign: "center" }}>{item.recipe} </Text>
+                <View style={{flex:1, alignItems:'flex-start'}}>
+                    <Text style={{ fontWeight:'bold', fontSize: 16 }}>{item.name} </Text>
+                    <Text>{item.recipe} </Text>
+                </View>
             </View>
+   
           </TouchableOpacity>
         </View>
+        
       );
 
     return (
         <View style={styles.container}>
             <SearchBar
+            round={true}
             lightTheme={true}
+            containerStyle={{backgroundColor: 'white', borderBottomColor: 'white', paddingTop: 14}}
+            inputContainerStyle = {{backgroundColor: '#e5e9f1'}}
+            inputStyle={{color: 'black'}}
             placeholder="칵테일 이름이나 재료를 입력해보세요"
             onChangeText={onChangeSearch}
             value={searchQuery}
@@ -101,7 +106,7 @@ export default function Search({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#fff"
     },
     background:{
         marginTop: 10,
@@ -143,6 +148,16 @@ const styles = StyleSheet.create({
         marginLeft:20,
         marginRight:20,
         fontSize: 18,
-    }
+    },
+    listcontainer: {
+        flexDirection:'row', 
+        alignItems: "center",
+        backgroundColor: '#cfd3db',
+        margin: 5,
+        padding: 5,
+        borderRadius: 10,
+        width: Dimensions.get('window').width*0.96,
+    },
 });
+
 
