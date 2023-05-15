@@ -4,7 +4,7 @@ from cosine import CosineSimilarity
 import pandas as pd
 import json
 import random
-from model import ChatGPT_api
+import model
 
 import firebase_admin
 from firebase_admin import credentials
@@ -16,7 +16,7 @@ firebase_db = firestore.client()
 
 cosineSim=CosineSimilarity()
 feelModel=FeelModel()
-chatGPT_api=ChatGPT_api()
+
 alcholModel = AlcholModel()
 tasteModel = TasteModel()
 
@@ -26,6 +26,16 @@ app = Flask(__name__)
 
 coc_data = pd.read_csv('dataset/칵테일 데이터 최종 (1).csv', low_memory=False)
 coc_data = coc_data.drop(columns=['sour', 'taste','keyword', 'Unnamed: 10','sourstring'], axis=1)
+
+class currentUser():
+    def __init__(self, name):
+        print("new user created!")
+        self.name = name
+        self.chatGPT_api = model.ChatGPT_api()
+    def chat_pred(self, question, message):
+        return self.chatGPT_api.reply(question, message)
+
+users = {}
 
 @app.route('/getLatestText', methods=['POST'])
 def getLatestText(user):
@@ -137,8 +147,12 @@ def recommend_cocktail():
 @app.route('/message', methods=['POST'])
 def message():
     data = request.get_json(force=True)
+    print(data)
     message = data['message']['text']
     user = data['user']
+
+    if not (user in users):
+        users[user] = currentUser(user)
    
     info = data['information']
     if info == "feel":
@@ -146,7 +160,7 @@ def message():
         feel_input = predict_feel(message)
         question = "오늘 기분이 어떠신가요?"
         reply = []
-        reply = str(chatGPT_api.reply(question, message))
+        reply = users[user].chat_pred(question, message)
         return jsonify(result="success", reply=reply)
 
     elif info == "free1":
@@ -154,7 +168,7 @@ def message():
         free_talk1 = data['message']['text']
         reply = []
         question = getLatestText(user)
-        reply = str(chatGPT_api.reply(question, message))
+        reply = users[user].chat_pred(question, message)
         return jsonify(result="success", reply=reply)
 
     elif info == "free2":
@@ -162,7 +176,7 @@ def message():
         free_talk2 = message
         reply = []
         question = getLatestText(user)
-        reply = str(chatGPT_api.reply(question, message))
+        reply = users[user].chat_pred(question, message)
         return jsonify(result="success", reply=reply)
 
     elif info == "taste":

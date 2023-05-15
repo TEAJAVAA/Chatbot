@@ -19,7 +19,8 @@ class ChatGPT_api():
         self.messages = []
 
     def reply(self, chat_question, user_response):
-        self.messages = []
+        #self.messages = []
+        print("self.messages content(before): ",self.messages)
         prompt_additions = " / 답변은 한문장으로 긍정적이거나 유머러스하게 존댓말로 해줘"
         self.messages.append({"role": "assistant", "content": chat_question})
         self.messages.append({"role": "user", "content": user_response})
@@ -30,6 +31,7 @@ class ChatGPT_api():
         )
         chat_response=completion.choices[0].message.content
         self.messages.append({"role": "assistant", "content":chat_response})
+        print("self.messages content(after): ",self.messages)
         return chat_response
     
     def reply_free(self, text1_user, text2_chatbot, text3_user):

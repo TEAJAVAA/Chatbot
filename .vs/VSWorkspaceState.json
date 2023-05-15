@@ -1,10 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\backend",
-    "\\frontend",
-    "\\frontend\\screens"
+    ""
   ],
-  "SelectedNode": "\\backend\\app.py",
+  "SelectedNode": "\\.gitignore",
   "PreviewInSolutionExplorer": false
 }
