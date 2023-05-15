@@ -17,6 +17,7 @@ class ChatGPT_api():
 
     def initialize(self, ):
         self.messages = []
+        self.free_messages=[]
 
     def reply(self, chat_question, user_response):
         
@@ -33,19 +34,17 @@ class ChatGPT_api():
         
         return chat_response
     
-    def reply_free(self, text1_user, text2_chatbot, text3_user):
+    def reply_free(self, message):
         
         prompt_additions = " / 답변은 한문장으로 긍정적이거나 유머러스하게 존댓말로 해줘"
-        self.messages.append({"role": "user", "content": text3_user})
-        self.messages.append({"role": "assistant", "content": text2_chatbot})
-        self.messages.append({"role": "user", "content": text1_user})
-        self.messages.append({"role": "system", "content": prompt_additions})
+        self.free_messages.append({"role": "user", "content": message})
+        self.free_messages.append({"role": "system", "content": prompt_additions})
         completion=openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
-            messages=self.messages
+            messages=self.free_messages
         )
         chat_response=completion.choices[0].message.content
-        self.messages.append({"role": "assistant", "content":chat_response})
+        self.free_messages.append({"role": "assistant", "content":chat_response})
         return chat_response
         
 
