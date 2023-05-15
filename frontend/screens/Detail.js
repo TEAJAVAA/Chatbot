@@ -100,8 +100,8 @@ const Detail = ({ route, navigation }) => {
                     degree: response.cocktail[0].degree,
                     recipe: response.cocktail[0].recipe,
                     about: response.cocktail[0].info,
-                    glass: "https://github.com/unul09/imageupload/blob/main/glass" + response.cocktail[0].glass + ".png?raw=true",
-                    content: "https://github.com/unul09/imageupload/blob/main/content" + response.cocktail[0].glass + ".png?raw=true",
+                    glass: response.cocktail[0].glass,
+                    content: response.cocktail[0].content,
                     color: response.cocktail[0].color,
                 });
             });
