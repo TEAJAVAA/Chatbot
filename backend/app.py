@@ -52,6 +52,7 @@ users = {}
 
 @app.route('/logout', methods=['POST'])
 def logout():
+    data = request.get_json(force=True)
     user = data['user']
     if user in users:
         del users[user]
