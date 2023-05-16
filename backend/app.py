@@ -50,6 +50,13 @@ class currentUser():
 
 users = {}
 
+@app.route('/logout', methods=['POST'])
+def logout():
+    user = data['user']
+    if user in users:
+        del users[user]
+
+
 @app.route('/getLatestText', methods=['POST'])
 def getLatestText(user):
     users_ref = firebase_db.collection(user)
@@ -146,6 +153,7 @@ def recommend_cocktail(user):
         cocktail = json.loads(cocktail)
         cocktails.append(cocktail)
     reply = "당신을 위한 칵테일을 추천드립니다!"
+    del users[user]
     return jsonify(result="success", reply=reply, cocktail1=cocktails[0], cocktail2=cocktails[1],cocktail3=cocktails[2])
 
 @app.route('/freeMessage', methods=['POST'])
