@@ -25,12 +25,25 @@ class ChatGPT_api():
         self.messages.append({"role": "assistant", "content": chat_question})
         self.messages.append({"role": "user", "content": user_response})
         self.messages.append({"role": "system", "content": prompt_additions})
-        completion=openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=self.messages
-        )
-        chat_response=completion.choices[0].message.content
-        self.messages.append({"role": "assistant", "content":chat_response})
+        
+        try: 
+            completion=openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=self.messages
+            )
+            chat_response=completion.choices[0].message.content
+            self.messages.append({"role": "assistant", "content":chat_response})
+        except:
+            self.messages = []
+            self.messages.append({"role": "assistant", "content": chat_question})
+            self.messages.append({"role": "user", "content": user_response})
+            self.messages.append({"role": "system", "content": prompt_additions})
+            completion=openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=self.messages
+            )
+            chat_response=completion.choices[0].message.content
+            self.messages.append({"role": "assistant", "content":chat_response})
         
         return chat_response
     
@@ -39,12 +52,25 @@ class ChatGPT_api():
         prompt_additions = " / 답변은 한문장으로 긍정적이거나 유머러스하게 존댓말로 해줘"
         self.free_messages.append({"role": "user", "content": message})
         self.free_messages.append({"role": "system", "content": prompt_additions})
-        completion=openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=self.free_messages
-        )
-        chat_response=completion.choices[0].message.content
-        self.free_messages.append({"role": "assistant", "content":chat_response})
+        try:
+            completion=openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=self.free_messages
+            )
+            chat_response=completion.choices[0].message.content
+            self.free_messages.append({"role": "assistant", "content":chat_response})
+            
+        except:
+            self.free_messages = []
+            self.free_messages.append({"role": "user", "content": message})
+            self.free_messages.append({"role": "system", "content": prompt_additions})
+            completion=openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=self.free_messages
+            )
+            chat_response=completion.choices[0].message.content
+            self.free_messages.append({"role": "assistant", "content":chat_response})
+            
         return chat_response
         
 
