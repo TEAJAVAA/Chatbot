@@ -28,6 +28,22 @@ export default function FreeChat() {
 
     const [messages, setMessages] = useState([]);
     const navigation = useNavigation();
+    const [isTyping, setIsTyping] = useState(false);
+
+    const renderFooter = (props) => {
+      if (isTyping==true)
+      {
+          return (
+              
+              <View>
+                  <Image source={require('../assets/textanimation.gif')} 
+                  style={styles.dotanimation}
+                  isTyping={isTyping}
+                  /> 
+              </View>
+          )
+      }
+    }
 
     useLayoutEffect(() => {
 
@@ -60,7 +76,49 @@ export default function FreeChat() {
           text,
           user
         });
-      }, []);
+
+      const message_info = {
+          method: "POST",
+          body: JSON.stringify({
+              message: messages[0],
+              user: auth?.currentUser?.email
+          }),
+          headers: {
+              "Content-Type": "application/json",
+          },
+      };
+      setIsTyping(true);
+      
+      fetch(url.flask + "/freeMessage", message_info)
+          
+          .then((response) => response.json())
+          .then((response) => {
+              if (response.result === "success") {
+                  setIsTyping(false);
+                  sendBotResponse(response.reply);
+              } else alert("sendBot ERROR");
+        });
+      }, [messages]);
+
+
+      // Chatbot Responds
+    const sendBotResponse = (text) => {
+
+      let msg = {
+          _id: Date.now(),
+          text: text,
+          createdAt: new Date(),
+          user: 'BOT_USER',
+      };
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, msg));
+      addDoc(collection(database, auth?.currentUser?.email + "_freechat"), {
+          _id: Date.now(),
+          text: text,
+          createdAt: new Date(),
+          user: 'BOT_USER',
+      });
+    }
+      
 
       // Send Button Style
     const renderSend = (props) => {
@@ -104,6 +162,7 @@ export default function FreeChat() {
             messages={messages}
             showAvatarForEveryMessage={true}
             showUserAvatar={false}
+            renderFooter={renderFooter}
             onSend={messages => onSend(messages)}
             alwaysShowSend
             renderSend={renderSend}
@@ -116,6 +175,7 @@ export default function FreeChat() {
                 borderRadius: 20,
             }}
             renderAvatar={() => null}
+            isTyping={isTyping}
             renderBubble={props => {
               return (
                 <Bubble
