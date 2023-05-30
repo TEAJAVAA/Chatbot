@@ -16,7 +16,8 @@ AI를 활용하여 사용자의 취향과 입맛에 알맞는 칵테일을 추�
 
 브로디와 기분, 원하는 맛 등에 대한 대화를 나눈 후 칵테일 3개를 추천받음
 
-![스크린샷 2023-05-31 오전 12.42.09.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/94ceab03-ff0f-4020-8d1d-68a13ee235cf/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-05-31_%E1%84%8B%E1%85%A9%E1%84%8C%E1%85%A5%E1%86%AB_12.42.09.png)
+<img width="317" alt="스크린샷 2023-05-31 오전 12 42 09" src="https://github.com/TEAJAVAA/Chatbot/assets/88281319/2e2468b7-3844-4773-bdb9-4c6626724b8e">
+
 
 1) ChatGPT를 통해 사용자와 상호작용
 
@@ -49,7 +50,8 @@ ChatGPT API로 바텐더와 일상적인 대화를 나누듯이 자유롭게 대
 
 ## 구현 구조도
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/270a1a6d-49c1-413a-89c6-c33274554f12/Untitled.png)
+<img width="719" alt="스크린샷 2023-05-31 오전 12 58 11" src="https://github.com/TEAJAVAA/Chatbot/assets/88281319/273daa34-d103-4d30-b123-cf63661b7862">
+
 
 Frontend
 
