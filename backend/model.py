@@ -9,7 +9,7 @@ import csv
 from keras.models import load_model
 
 import openai
-openai.api_key="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"
+openai.api_key=""
 
 class ChatGPT_api():
     def __init__(self):
